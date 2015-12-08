@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{int8\PYGZus{}t} \PYG{n}{command}\PYG{p}{[}\PYG{l+m+mi}{10}\PYG{p}{];}
+\PYG{n}{HAL\PYGZus{}UART\PYGZus{}Receive\PYGZus{}DMA}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{huart2}\PYG{p}{,} \PYG{n}{command}\PYG{p}{,} \PYG{k}{sizeof}\PYG{p}{(}\PYG{n}{command}\PYG{p}{));}
+\end{Verbatim}
