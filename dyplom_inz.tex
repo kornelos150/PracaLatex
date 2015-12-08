@@ -74,7 +74,7 @@
 
 
 \usepackage{hyperref}
-\usepackage{soul}
+\usepackage{adjustbox}
 
 
 %pakiet wypisujący na marginesie etykiety równań i rysunków zdefiniowanych przez \label{}, chcąc wygenerować finalną wersję dokumentu wystarczy usunąć poniższą linię
@@ -533,6 +533,9 @@ W stałym interwale czasowym problem pojawia wariancja odczytu impulsów, która
 
 Pomiar odbył się przy pełnym naładowaniu baterii ( 8.2[V]). Całe doświadczenie było w pełni zautomatyzowane poprzez skrypt JavaScript. W tabeli przedstawione są kolejno: wypełnienie PWM, średnia zliczonych impulsów w ramce  60 ms, ich odchylenie standardowe, procent odcylenia w stosunku do średniej oraz uśredniona prędkość.
 
+\begin{table}[ht]
+\centering
+\begin{adjustbox}{width=1\textwidth}
 \begin{tabular}{ | l | l | l | l | l | }
 \hline
 	PWM & śr. impulsów & Odchyl. standardowe & Stosunek odch do śr [\%] & Prędkość [cm/s]  \\ \hline
@@ -552,6 +555,10 @@ Pomiar odbył się przy pełnym naładowaniu baterii ( 8.2[V]). Całe doświadcz
 	900 & 107.23 & 0.45 & 0.42 & 19.63 \\ \hline
 	1000 & 120.93 & 0.47 & 0.389 & 22.12 \\ \hline
 \end{tabular}
+\end{adjustbox}
+\caption{Wyniki doświadczenia} 
+\end{table}
+
 Na podstawie widzimy, że odczyt przy prędkości 0,7 cm/s odczyt jest w bardzo dużym stopniu niestabilny o czym świadczą trzynastoprocentowe wahanie w zliczaniu impulsów. Kolejne odczyty odchylenie od średniej, jednakże błąd na poziome 2.5% wciąż może wprowadzić spore oscylacje przy regulacji prędkości. Błąd poniżej 1% uznany został za miarodajny i na podstawie wyników eksperymentu stwierdzona, że pomiar prędkość powyżej 10 cm/s jest stabilny.
 
  \section{Układ regulacji}
@@ -960,13 +967,14 @@ Protokół komunikacyjny używany do wymiany danych pomiędzy robotem, a aplikac
 Wiadomość składa się z 10 bajtów:
 \begin{table}[!htb]
 \centering
-\caption{My caption}
+\begin{adjustbox}{width=1\textwidth}
 \label{my-label}
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}
 \hline
 Nr bajtu          & 0   & 1  & 2    & 3    & 4   & 5    & 6    & 7    & 8    & 9   \\ \hline
 Rodzaj wiadomości & "B" & ID & Dane & Dane & "M" & Dane & Dane & Dane & Dane & "E" \\ \hline
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 Bajty 0, 4 i 9 w każdej wiadomości  są stałe i są równe wartości danej litery w kodzie ASCII. Służą one do kontroli poprawności przesłanej wiadomości.
@@ -980,18 +988,275 @@ Reszta bajtów przenosi dane konkretnej wiadomości. Wiadomości pozwalają na k
 Każda wiadomość kontrolna przedstawiona jest według poniższego schematu:
 \begin{table}[!htb]
 \centering
-\caption{My caption}
+\begin{adjustbox}{width=1\textwidth}
 \label{my-label}
 \begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
 \hline
-\multicolumn{3}{|l|}{Nazwa Wiadomości} & \multicolumn{3}{l|}{Komenda Javascript} & \multicolumn{2}{l|}{Typ} & \multicolumn{2}{l|}{ID} \\ \hline
+\multicolumn{4}{|l|}{Nazwa Wiadomości} & \multicolumn{4}{l|}{Komenda Javascript} & \multicolumn{2}{l|}{Typ} \\ \hline
 BAJT 0      & BAJT 1      & BAJT 2     & BAJT 3      & BAJT 4      & BAJT 5      & BAJT 6      & BAJT 7     & BAJT 8     & BAJT 9     \\ \hline
 \multicolumn{10}{|c|}{CHARAKTERYSTKA WIADMOSCI}                                                                                       \\ \hline
 \end{tabular}
+\end{adjustbox}
 \end{table}
 
 Dla wielkości USTAW w drugim wierszu zaprezentowana jest komenda którą odbiera robot, dla wiadomości typu POBIERZ jest to odpowiedź otrzymywana przez aplikację sterującą.
-  
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Ustawienie prędkości zadaniej} & \multicolumn{4}{l|}{RobotSetVel(float TR,float ROT,float time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B" \hspace{1em}             & 1\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & T1\hspace{2em}         & T2\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+Wiadomość ustawia prędkość zadaną dla regulatora. 
+Wartości L1 i L2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą zadaną prędkość dla lewego koła
+Wartości R1 i R2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą zadaną prędkość dla prawego koła 
+Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund po jakim zadana prędkość" będzie wyzerowana. 
+Jeżeli wartość T1 i T2 wynoszą zero timer odpowiedzialny za zatrzymanie silników po ustalonej wartości nie będzie uruchomiony a zadana prędkość nie będzie zmieniana.
+
+Dane zawierające prędkości są deserializowane i zapisywane do odpowiadających im globalnych zmiennych robota. Jeżeli te dane zawierają wszystkie wartości równe zero silniki są zatrzymywane
+Wywołując komendę z poziomu JavaScript prędkoć translacji i rotacji zamieniana jest na lewego i prawego koła przed wysłaniem.
+Komenda zwraca sterowanie od razu po wywołaniu
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Ustawienie prędkości zadaniej z blokadą} & \multicolumn{4}{l|}{RobotSetVelWait(float TR,float ROT,float time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B" \hspace{1em}             & 17\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & T1\hspace{2em}         & T2\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Komenda różni się od poprzedniej tym, że zwraca sterowanie po ekspiracji timera
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Pobranie faktycznej prędkości } & \multicolumn{4}{l|}{RobotGetVel()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B" \hspace{1em}             & 2\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Wiadomość zwraca faktyczną prędkość, jaką posiada robot. 
+Wartości L1 i L2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą faktyczną prędkość dla lewego koła
+Wartości R1 i R2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą faktyczną prędkość dla lewego koła 
+
+Odsyłane prędkości są zserializowanymi zmiennymi globalnymi, których wartość obliczana  jest w cyklu aktualizacji prędkości. Opis procedury jest w rozdziale 3.5
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Ustawienie nastaw regulatora } & \multicolumn{4}{l|}{setConfig(double P, double D)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B" \hspace{1em}             & 3\hspace{2em}              & P1\hspace{2em}              & P2\hspace{2em}         & "M"\hspace{2em}         & D1\hspace{2em}         & D2\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Wiadomość ustawia nastawy regulatora. 
+Wartości P1 i P2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą wartość wzmocnienia członu proporcjonalnego regulatora PD
+Wartości P1 i P2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą wartość wzmocnienia członu różniczkującego regulatora PD
+
+Dane są deserializowane i zapisywane do odpowiadających im globalnych zmiennych robota.
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Pobranie nastaw regulatora  } & \multicolumn{4}{l|}{getConfig()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B" \hspace{1em}             & 4\hspace{2em}              & P1\hspace{2em}              & P2\hspace{2em}         & "M"\hspace{2em}         & D1\hspace{2em}         & D2\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+ Wiadomość zwraca aktualne nastawy regulatora. 
+Wartości P1 i P2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą wartość wzmocnienia członu proporcjonalnego regulatora PD
+Wartości P1 i P2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą wartość wzmocnienia członu różniczkującego regulatora PD
+
+Odsyłane nastawy  są zserializowanymi zmiennymi globalnymi.
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Ustawienie timera bezpieczeństwa } & \multicolumn{4}{l|}{setTimeout(int timeout)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B" \hspace{1em}             & 5\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Wiadomość ustawia timer bezpieczeństwa. Timer jest startuje wraz z odebraniem wiadomości przez robota. Jeżeli nie otrzyma następnej wiadomości przed końcem odliczania robot zatrzyma silniki
+Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund co ile generowane jest przerwanie.
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Pobranie interwału timera bezpieczeństwa  } & \multicolumn{4}{l|}{getTimeout()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B" \hspace{1em}             & 6\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+Wiadomość zwraca ustawioną wartość milisekund po którym uruchamiamy jest timer bezpieczeństwa.
+Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund co ile generowane jest przerwanie.
+
+Dane są składane w 16-bitową wartość całkowitą, która jest wykorzystywana jest w ustawieniach timera bezpieczeństwa. Timer został opisany w rozdziale 3.5.
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Ustawienie wartosci wypelnienia PWM } & \multicolumn{4}{l|}{setPWM(int left, int right, int time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B" \hspace{1em}             & 7\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & T1\hspace{2em}         & T2\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Wiadomość ustawia wartość sygnału PWM dla silników 
+Wartości L1 i L2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą wartość sygnału PWM, który steruje lewym silnikiem.
+Wartości R1 i R2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą PWM który, steruje prawym silnikiem.
+Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund po jakim zadana prędkość będzie wyzerowana. Jeżeli wartość T1 i T2 wynoszą zero timer odpowiedzialny za zatrzymanie silników po ustalonej wartości nie będzie uruchomiony i a zadana prędkość nie będzie zmieniana.
+
+Dane zawierające PWM są składane do zmiennych 16-bitowych i zapisywane ustawiana na timery generujące sygnały PWM Maksymalne wypełnienie wynosi 4200 i wysłanie prędkości większej spowoduję ustawienie tej wartości. Jeżeli te dane zawierają wszystkie wartości równe zero silniki są zatrzymywane
+
+Ustawienie wartości sygnałów PWM jest niemożliwe, gdy uruchomiony jest timer odpowiedzialny za działanie regulatora prędkości. Nie można nastawiać bezpośrednio wartości wypełnienia sygnału PWM, gdy kontroluje tę wartość regulator.
+Komenda zwraca sterowanie od razu po wywołaniu
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Ustawienie wartosci wypelnienia PWM } & \multicolumn{4}{l|}{setPWM(int left, int right, int time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B" \hspace{1em}             & 17\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & T1\hspace{2em}         & T2\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+Komenda różni się od poprzedniej tym, że zwraca sterowanie po ekspiracji timera
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Pobranie wartości wypełnienia PWM  } & \multicolumn{4}{l|}{getPWM()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B" \hspace{1em}             & 8\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+Wiadomość zwraca wartość sygnału PWM dla silników 
+Wartości L1 i L2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą wartość sygnału PWM, który steruje lewym silnikiem.
+Wartości R1 i R2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą PWM który, steruje prawym silnikiem.
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Ustawienie timera aktualizacji prędkości } & \multicolumn{4}{l|}{setEncoderMeas(int time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B" \hspace{1em}             & 9\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Wiadomość ustawia timer który, co określony interwał czasu aktualizuje prędkość robota
+Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund co ile generowane jest przerwanie.
+Działanie timera i opis aktualizacji prędkości opisany został w rozdziale 3.6
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Pobranie nastawionej prędkości regulatora   } & \multicolumn{4}{l|}{getEncoderMeas()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B" \hspace{1em}             & 10\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Wiadomość zwraca ustawioną wartość milisekund interwału aktualizacji prędkości robota
+Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund interwału czasowego timera
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Pobranie nastawionej prędkości regulatora  } & \multicolumn{4}{l|}{RobotGetSetVel()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B" \hspace{1em}             & 11\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+Wiadomość zwraca prędkość która jest zadana na wejście regulatora. 
+Wartości L1 i L2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą zadaną prędkość dla lewego koła
+Wartości R1 i R2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą zadaną prędkość dla lewego koła 
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Ustawienie timera aktywacji regulatora } & \multicolumn{4}{l|}{setRegulationTimer(int time))} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B" \hspace{1em}             & 12\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Wiadomość ustawia timer który, co określony interwał czasu uruchamia regulator.
+Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund co ile generowane jest przerwanie.
+Ustawienie wartości T1 i T2 na zero oznacza wyłączenia regulatora i umożliwia nastawianie wartości wypełnienia PWM bezpośrednio na silniki. W przypadku wyłączonego timera, ustawienie wartości większej od zera włącza regulację prędkości.
+Działanie timera i opis regulacji prędkości opisany został w rozdziale 3.7
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+\multicolumn{4}{|l|}{Pobranie nastawionej prędkości regulatora   } & \multicolumn{4}{l|}{getRegulationTimer()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B" \hspace{1em}             & 13\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Wiadomość zwraca ustawioną wartość milisekund interwału regulatora prędkości
+Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund interwału czasowego timera
+
+
+
+
   \chapter{Prezentacja możliwości wykonanego projektu}
 
  \section{Dobór nastaw regulator}
