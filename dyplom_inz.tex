@@ -69,12 +69,12 @@
   numbers=left,
   stepnumber=1,
   numbersep=5pt,
-  inputencoding=latin1
 }
 
 
 
 \usepackage{hyperref}
+\usepackage{soul}
 
 
 %pakiet wypisujący na marginesie etykiety równań i rysunków zdefiniowanych przez \label{}, chcąc wygenerować finalną wersję dokumentu wystarczy usunąć poniższą linię
@@ -322,13 +322,13 @@ Funkcja jest przez bibliotekę HAL wywoływana dla zarejestrowanego przerwania o
 \\Problem, jaki należy rozważyć, w przypadku komunikacji asynchronicznej, jest sytuacja, w której wiadomość jest odbierana zanim wcześniejsza zostanie obsłużona. Dodatkową komplikacja, w tej sytuacji jest użycie DMA, które wypełnia wartości w pamięci z pominięcie pracy, a tym samym kontroli procesora. Praca, na tym samym obszarze pamięci, które wypełnia DMA, podczas obsługi, mogłaby skutkować zmianą wartości tablicy podczas odczytu z niej wiadomości. Z tego powodu, pierwszym etapem w obsłudze przerwania, jest utworzenie kopii tablicy commandi praca na duplikacie. To rozwiązanie, zwiększa stabilność przetwarzania wiadomości, ale nie rozwiązuje problemu całkowicie. Nowa wiadomość mogłaby pojawić się podczas tworzenia duplikatu, co znów generuje ten sam problem. Z pomocą przychodzi tutaj sprzętowa obsługa przerwańw mikrokontrolerach STM. Przetworzenie wiadomości wywoływana jest w obsłudze przerwania, które kończy się dopiero po zaaplikowaniu komendy. Kontroler przerwań NVIC, w przypadku takiego samego priorytetu, tworzy kolejkę LIFO przerwań i a następnie kolejno przekazuje sterowanie, po zakończeniu aktualnie wywołanej funkcji obsługi. Z tego powodu handler nie wywoła się przed zakończeniem przetwarzania bieżącej komendy. Poza wyżej wymienionymi zabezpieczeniami omawiany błąd eliminowany jest przez konstrukcję protokołu komunikacyjnego z aplikacją sterującą. Zgodnie z nim, aplikacja nie wysyła, następnej wiadomości bez otrzymania odpowiedzi na poprzednią, w przypadku prawidłowej wymiany danych, rozwiązuje ten problem.
 
  \section{Proces przetwarzania wiadomosci}
-
 W poprzednim rozdziale zaprezentowana jest obsługa przerwania od zakończenia transmisji szeregowej. Obecna jest funkcja „commandHandler” odpowiedzialna za obsługę wiadomości i uformowanie odpowiedzi. Struktura  funkcji „commandHandler” ( dla czytelności pominąłem fragment funkcji,n gdyż nie wpływa to na zrozumienie jej działania):
 \begin{lstlisting}[style=c]
+
 int8_t* commandHandler(int8_t* command,int8_t* response)
 {
-if(command[0] != ‘B’ || command[4] != ‘M’ || command[9] != ‘E’)
-returninvalidMessage(response);
+if(command[0] != 'B' || command[4] != 'M' || command[9] !='E')
+return invalidMessage(response);
 if(command[1] == 1)
 {
 //set speed
@@ -339,7 +339,7 @@ if(command[1] == 2)
 //get speed
 returngetVelocityResponse(command,response);
 }
-//(…) pominęta część funkcji
+//(...)
 if(command[1] == 14)
 {
 //set direction pins
@@ -363,7 +363,49 @@ int8_t* setVelocityResponse(int8_t* command,int8_t* response)
 uint8_tindex = 0;
 for(;index<10; ++index)
 response[index] = 0;
-response[0] = ‘B’;
+response[0] = 'B';
+response[1] = command[1];
+response[2] = command[2];
+response[3] = command[3];
+response[4] = command[5];
+response[5] = command[6];
+if(command[2] == 0 && command[3] == 0 && command[5] == 0 && command[6] == 0)
+{
+stopMotors();
+return response;
+}
+int8_t data[2];
+
+data[0] = command[2];
+data[1] = command[3];
+setLeftSpeed = byte2Float(data);
+
+data[0] = command[5];
+data[1] = command[6];
+setRightSpeed = byte2Float(data);
+
+if(command[7] != 0&& command[8] != 0)
+{
+data[0] = command[7];
+data[1] = command[8];
+uint32_t timer = byte2int(data);
+
+startSpeedTimer(timer);
+}
+
+return response;
+\end{lstlisting}
+
+Działanie prezentowanej funkcji jest ściśle związane z protokołem komunikacyjnym pomiędzy robotem a aplikacją sterującą. Zagadnienie to jest szczegółowo opisane w rozdziale piątym. Początek funkcji sprawdza czy na odpowiednich pozycjach występują wartości stałe i charakterystyczne dla każdej wiadomości, w przeciwnym wypadku wysyłana jest wiadomość informująca o błędzie. Następnie na podstawie identyfikatora wiadomości wywoływana jest konkretna funkcja obsługująca daną wiadomość, a jeżeli podany identyfikator nie jest znany zwracany jest błąd. 
+\\Obsługa wiadomości zaprezentowana będzie na przykładzie komendy ustalające prędkość zadaną  w układzie regulacji:
+\begin{lstlisting}[style=c]
+
+int8_t* setVelocityResponse(int8_t* command,int8_t* response)
+{
+uint8_tindex = 0;
+for(;index<10; ++index)
+response[index] = 0;
+response[0] = 'B';
 response[1] = command[1];
 response[2] = command[2];
 response[3] = command[3];
@@ -396,6 +438,7 @@ startSpeedTimer(timer);
 return response;
 \end{lstlisting}
 
+
 Każda funkcja początkowo wypełnia odpowiedź zerami i wartościami stałymi. Dla wiadomości typu „ustaw” odpowiedź powinna być identyczna jak komenda przychodząca. Dzięki temu aplikacja sterująca może mieć pewność, że ustawione zostały podane wartości. Pobór fatycznych wartości ustawionych na robocie odbywa się za pomocą wiadomości typu „pobierz”.  Zaprezentowana wiadomość ustawia 3 pozycje: prędkość lewego koła, prędkość prawego koła (w cm/s ) oraz opcjonalnie czas trwania zadanego ruchu. Wiadomości ustawiające prędkość charakteryzują się jeszcze jedną właściwością. Mając wszystkie pola wartości  wypełnione zerami wywołuje się funkcja zatrzymania silników robota. Jest to jedna z form zabezpieczenia. Warunek ten jest sprawdzany od razu po uformowaniu odpowiedzi. Kolejnym etapem jest konwersja odpowiednich bajtów na liczbę zmiennoprzecinkową i zapis wartości do globalnej zmiennej określającej zadaną prędkość dla danego koła. Ostatnim etapem obsługi wiadomości jest ustawienie czasu trwania długości danego ruchu. Jeżeli pola nie są wypełnione zerami wystartuje timer z przesłanymi danymi ilościami milisekund, i po tym czasie zostaną zatrzymane silniki. W przeciwnym razie zadana prędkość będzie się utrzymywała aż do jej zmiany. Po zakończeniu procedury zwracany jest adres z odpowiedzią.
 
  \section{Zabezpieczenia robota}
@@ -427,7 +470,7 @@ voidHAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		htim2.Instance->CNT = encoderTimer - 1;
 		HAL_TIM_Base_Start_IT(&htim2);
 	}
-	//( … )
+	//(...)
 	else if(htim == &htim3)
 	{
 		onEncoderOverload(&htim3,&leftTotalTicks);
@@ -484,11 +527,11 @@ return tmp;
 
 W pierwszym kroku obliczana jest ilość obrotów jakie wykonało koło biorąc po uwagę przekładnie silnika i rozdzielczość samego czujnika . Następnym krokiem jest zamiana ilości obrotów na prędkość kątową wyrażoną w radianach na sekundę. Ostatnim etapem jest uzyskanie prędkości liniowej mnożąc prędkość kątową przez promień koła i zwrócenie wartości.
 
-\\Przedstawione rozwiązanie jest odporne na duże prędkości,  niemniej jednak może się nie sprawdzać w przypadku małych. Korzystając z enkoderów inkrementalnych należy być świadomym niepewności pomiarowych w odczycie ilości impulsów w stałej ramie czasowej, wywołanej brakiem synchronizacji generowanego przez czujniki sygnału i timera wyzwalającego aktualizację. Problem pogłębia fakt, że sama rama czasowa może być ustalona z zewnątrz podczas pracy robota. Bezpieczniejsze byłoby zablokowanie możliwości zmiany ustawień timera, jednakże byłoby to sprzeczne z ideą projektu. Dobrana empirycznie wartość 60 [ms] jest wartością nominalną i zalecaną podczas korzystania z robota, a za zamianę tej wartości przejmuję pełną odpowiedzialność użytkownik. 
+Przedstawione rozwiązanie jest odporne na duże prędkości,  niemniej jednak może się nie sprawdzać w przypadku małych. Korzystając z enkoderów inkrementalnych należy być świadomym niepewności pomiarowych w odczycie ilości impulsów w stałej ramie czasowej, wywołanej brakiem synchronizacji generowanego przez czujniki sygnału i timera wyzwalającego aktualizację. Problem pogłębia fakt, że sama rama czasowa może być ustalona z zewnątrz podczas pracy robota. Bezpieczniejsze byłoby zablokowanie możliwości zmiany ustawień timera, jednakże byłoby to sprzeczne z ideą projektu. Dobrana empirycznie wartość 60 [ms] jest wartością nominalną i zalecaną podczas korzystania z robota, a za zamianę tej wartości przejmuję pełną odpowiedzialność użytkownik. 
 
-\\W stałym interwale czasowym problem pojawia wariancja odczytu impulsów, która rośnie wraz ze zmniejszaniem prędkości. Dla stosunkowo dużych prędkości wariancja odczytanych impulsów jest na tyle niewielka, że można ją pominąć, natomiast przy niewielkich potrafi mocno zaburzyć pomiar. W celu wyznaczenia progu prędkości, dla którego pomiar jest stabilny, przygotowany został eksperyment, którego wynika przedstawiono poniżej. Doświadczenie polegało na 30 krotnym pomiarze prędkości oraz ilości impulsów w ramie czasowej dla ustalonego PWM, który następnie inkrementowany był do nowej wartości. W ten sposób wyeliminowano problem błędów wywołanych samym procesem regulacji. 
+W stałym interwale czasowym problem pojawia wariancja odczytu impulsów, która rośnie wraz ze zmniejszaniem prędkości. Dla stosunkowo dużych prędkości wariancja odczytanych impulsów jest na tyle niewielka, że można ją pominąć, natomiast przy niewielkich potrafi mocno zaburzyć pomiar. W celu wyznaczenia progu prędkości, dla którego pomiar jest stabilny, przygotowany został eksperyment, którego wynika przedstawiono poniżej. Doświadczenie polegało na 30 krotnym pomiarze prędkości oraz ilości impulsów w ramie czasowej dla ustalonego PWM, który następnie inkrementowany był do nowej wartości. W ten sposób wyeliminowano problem błędów wywołanych samym procesem regulacji. 
 
-\\Pomiar odbył się przy pełnym naładowaniu baterii ( 8.2[V]). Całe doświadczenie było w pełni zautomatyzowane poprzez skrypt JavaScript. W tabeli przedstawione są kolejno: wypełnienie PWM, średnia zliczonych impulsów w ramce  60 ms, ich odchylenie standardowe, procent odcylenia w stosunku do średniej oraz uśredniona prędkość.
+Pomiar odbył się przy pełnym naładowaniu baterii ( 8.2[V]). Całe doświadczenie było w pełni zautomatyzowane poprzez skrypt JavaScript. W tabeli przedstawione są kolejno: wypełnienie PWM, średnia zliczonych impulsów w ramce  60 ms, ich odchylenie standardowe, procent odcylenia w stosunku do średniej oraz uśredniona prędkość.
 
 \begin{tabular}{ | l | l | l | l | l | }
 \hline
@@ -511,25 +554,443 @@ W pierwszym kroku obliczana jest ilość obrotów jakie wykonało koło biorąc 
 \end{tabular}
 Na podstawie widzimy, że odczyt przy prędkości 0,7 cm/s odczyt jest w bardzo dużym stopniu niestabilny o czym świadczą trzynastoprocentowe wahanie w zliczaniu impulsów. Kolejne odczyty odchylenie od średniej, jednakże błąd na poziome 2.5% wciąż może wprowadzić spore oscylacje przy regulacji prędkości. Błąd poniżej 1% uznany został za miarodajny i na podstawie wyników eksperymentu stwierdzona, że pomiar prędkość powyżej 10 cm/s jest stabilny.
 
-
-
  \section{Układ regulacji}
+   \begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{images/regulacja}
+    \caption{Schemat układu regulacji}
+    \label{fig:regulacja}
+   \end{figure}
+
+Bloki o podwójnym obramowaniu oznaczają stan robota, natomiast o pojedynczym reprezentują operację. Strzałki pokazują przepływ danych podczas regulacji prędkości.Uchyb regulacji jest różnicą pomiędzy prędkością zadaną, a aktualną, uzyskaną w trakcie procedury opisanej w poprzedniej sekcji. Wartość uchybu podlega wzmocnieniu i całkowaniu z ustawionymi nastawami, a następnie podlega sumowani ze stanem poprzednim. Operacja ta jest wymagana,  ponieważ sterowniki silników kontrolowane są przez sygnał PWM, nie jest w stanie utrzymać stałej wartości sterującej. To działanie mogłoby być realizowana przez całkujący człon regulatora, jednakże wykorzystane rozwiązanie upraszcza implementacje i dobrze wpasowuje się w dyskretną naturę regulatora.
+W implementacji członuróżniczkującego na mikrokontrolerze występuje problem przy dyskretyzacji sygnału. Poniższy wzór aproksymuje operacje różniczkowania na dziedzinie dyskretnej:
+\begin{equation}\label{eq:aproksymacja}
+   \frac{de(t)}{d} \sim \frac{[e(n) - e(n-1)]}{T} 
+  \end{equation}
+Pochodna uchybu w systemie dyskretnym przybliżona jest przez iloraz różnicowy. Dokładność wynika przybliżenia jest tym większa, im mniejszy jest okres T. Projekt zakładał wyzwalanie procedury regulacji prędkości poprzez timer, którego interwał ustalany jest wiadomością kontrolną przez użytkownika. Podobnie jak w przypadku aktualizacji prędkości, kosztem poniesionym za swobodę ustawień jest bezpieczeństwo działania układu regulacji. Wartością nominalną timera regulacji jest 150[ms] co jest jednocześnie okresem dyskretyzacji członu różniczkującego. Pomimo, że aproksymacja w te sposób w znaczny sposób od różniczkowania w dziedzinie ciągłej, wykorzystałem to rozwiązanie ze względu na łatwość implementacji oraz jakość regulacji na oczekiwanym poziomie.
+\begin{lstlisting}[style=c]
+void regulation(void)
+{
+	eLeft = setLeftSpeed - leftVelocity;
+	eRight = setRightSpeed - rightVelocity;
+	newPWMLeft = pVal * eLeft + dVal * (eLeft - peLeft);
+	newPWMRight = pVal * eRight + dVal * (eRight - peRight) / (getTimerTimeout(&htim10) * 0.0001);         
+	peLeft = eLeft;
+	peRight = eRight;
+	addNewPWM(newPWMLeft,newPWMRight);
+}
+\end{lstlisting}
+
+Algorytm regulacji zaimplementowany została według wyżej wymienionego sposobu. Okres dyskretyzacji członu różniczkującego przeskalowany został do sekund. Aby regulator działął prawidłowo ważne jest spełnienie warunku:
+\begin{equation}\label{eq:aproksymacja}
+    T_{regulacji}  \geq  T_{akt. predkosci} 
+  \end{equation}
+Aktualizacja prędkości musi być odbywać się przynajmniej tak często jak regulacja. W przeciwnym razie, regulator będzie wyliczał uchyb względem błędnej prędkości, co może całkowicie zaburzy pracę robota.
 
 \chapter{Oprogramowanie aplikacji sterującej}
-
  \section{Struktura oprogramowania}
+Aplikacja do sterowania zdalnego robotem została napisana w języka Java. Kod źródłowy jest kompilowany do kodu bajtowego ( forma pośrednia pomiędzy kodem źródłowym, a instrukcjami maszynowymi ) i może być uruchamiany na każdej platformie posiadającej Maszynę Wirtualną Javy. Wybór języka wynika, z wieloplatformowości powstałego programu oraz osobistym doświadczeniu w tworzeniu graficznego interfejsu użytkownika. 
+
+Aplikacja składa się z trzech podstawowych komponentów:
+\begin{enumerate}
+ \item modułu kontroli komunikacji Bluetooth
+ \item modułu sterowania tekstowego
+ \item modułu sterowania graficznego
+\end{enumerate}
+
+Poza tymi, istnieje jeszcze jeden komponent odpowiedzialny ze utworzenie wyżej wymienionych modułów oraz posiada zbiór funkcji używanych przez wszystkie moduły. Wszystkie komponenty w kodzie źródłowym zorganizowane są w formie pakietów Java. Pakiet Java jest mechanizmem języka, który pozwala grupować powiązane ze sobą klasy, nadając im jednocześnie wspólną przestrzeń nazw.
+
+   \begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{images/main}
+    \caption{Diagram klas głównego modułu}
+    \label{fig:main}
+   \end{figure}
+
+Program staruje w klasie głównej InitFrame. Obiekt tej klasy zawiera w sobie egzemplarze klas zarządzających oknami modułów sterujących oraz implementacje interfejsu IBluetooth. Wszystkie przedstawione moduły oraz ich struktura opisane są w dalszej części tego rozdziału. 
+
  \section{Moduł kontroli komunikacji Bluetooth}
+
+Moduł ten jest komponentem, którego zadaniem jest obsługiwanie transmisji szeregowej Bluetooth z robotem. Moduł definiuje abstrakcyjny interfejs który pozwala na wymianę informacji z robotem, jednocześnie ukrywając techniczne szczegóły realizacji transmisji danych. 
+
+   \begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{images/bt}
+    \caption{Diagram klas modułu Bluetooth}
+    \label{fig:bt}
+   \end{figure}
+
+Podstawą modułu jest interfejs IBluetooth. Udostępnia szereg funkcji, do wymiany danych z robotem. Argumenty funkcji posiadają typ danych, który w naturalny sposób odzwierciedla wartość jaką wyraża. Przykładem może być, zadana prędkość, która posiada typ double, czy czas ekspiracji timera, wyrażony w liczbach całkowitych. Odpowiedzialność za przygotowanie odpowiedniej wiadomości, zgodnej z zaprojektowanym protokołem przeniesiona jest na ten komponent. Warto również zauważyć, że funkcja zadająca prędkość (setVelocity) posługuje się argumentami : Translacja, Rotacja. Z poziomu aplikacji użytkownik korzysta z zadawania prędkości translacji ( ruchu postępowego robota w dwuwymiarowym układzie współrzędnych) i rotacji ( ruchu obrotowego ) , a nie prędkościami poszczególnych kół. Z punktu widzenia użytkownika jest to bardziej intuicyjne rozwiązanie. Pobieranie wartości również jest przekształcane z prędkości lewego i prawego koła na prędkość translacji i rotacji. Transformacje za pomocą funkcji:
+
+\begin{lstlisting}[style=java]
+public static double[] TranRot2LeftRight(double translation, double rotation)
+{
+	double[] result = new double[2] ;
+	result[0] = translation + rotation;
+	result[1] = translation - rotation;
+	return result;
+}	
+public static double[] LertRight2TranRot(double left,double right)
+{
+	double[] result =new double[2] ;
+	result[0] = (left + right)/2;
+	result[1] = (left - right)/2;
+	return result;
+}
+
+\end{lstlisting}
+
+Każda funkcja zwraca łańcuch znaków zawierająca sformatowaną odpowiedź robota. Wybór tego typu jest omówiony w podrozdziale 4.3.  Interfejs posiada dwie implementacje:
+
+\begin{itemize}
+  \item klasa, która symuluje działanie robota, używana we wstępnej fazie implementacji oraz do testowania działania aplikacji bez połączenia z robotem
+  \item klasa, która obsługuje połączenie szeregowe poprzez wirtualny port COM z modułem Bluetooth na robocie oraz tworzy właściwe wiadomości gotowe do transmisji
+\end{itemize}
+
+Istotną koncepcją przy tworzeniu było zapewnianie, aby tylko jedna instancja obiektu była tworzona podczas pracy programu. Jak w przypadku klasy symulującej nie ma to większego znaczenia, jest niezbędne we właściwej implementacji. Wynika to z faktu, że nawiązywana jest transmisja szeregowa, która blokuje dany port COM. Próba utworzenia kolejnej instancji zakończy się błędem. Rozwiązane to jest poprzez zastosowanie wzorca projektowego singleton. 
+
+Sama obsługa portu szeregowego wykorzystuje bibliotekę jSSC udostępnioną na otwartej licencji. Obsługa portów szeregowych jest ściśle związana z systemem operacyjnym  i wymagana jest ich natywna implementacja, specyficzna dla danego systemu. Zastosowana biblioteka posiada zaimplementowaną natywną obsługę transmisji szeregowej dla większości znanych platform oraz udostępnia abstrakcyjny interfejs w języku Java, który pozwala wykorzystanie go w programie.
+
  \section{Moduł sterowania tekstowego}
+Głównym założeniem przy projektowaniu aplikacji sterującej było umożliwienie użytkownikowi tworzenia skryptów pozwalający implementować dowolny algorytm oraz interakcję z robotem za pomocą komend tekstowych. Wymagało to stworzenie modułu o podstawowej funkcjonalności edytora testowego. Założeniem była również interakcja z poziomu konsoli interpretera, który swoją funkcjonalnością będzie przypominał inne znane interpretery języków skryptowych.
+
+   \begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{images/iterpreter1}
+    \caption{Okno panelem interpretera  z interpreterem }
+    \label{fig:iterpreter1}
+   \end{figure}
+
+Interpreter wykonuje pojedynczą instrukcję, zakończoną średnikiem. Klawisz ENTER rozpoczyna wykonywanie komendy, natomiast klawiszami strzałek możemy przeglądać historie wykonanych instrukcji. Interpreter nie jest związany z panelem sterowania umieszczonym powyżej, interakcja odbywa się tylko za pomocą klawiszy. 
+
+   \begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{images/skryptowanie}
+    \caption{Okno z panelem skryptu }
+    \label{fig:skryptowanie}
+   \end{figure}
+
+Panel edycji skryptów posiada funkcjonalność podstawowego edytora testu. Górne pole tekstowe służy do tworzenia kodu, natomiast dolne jest przekierowanym standardowym wyjściem silnika JavaScript. Powyżej pól tekstowych znajduję się pasek narzędzi oraz menu. Wszystkie funkcje wspomagania edycji dostępne są z poziomu menu, paska narzędzi oraz skrótów klawiszowych. Edytor umożliwia:
+
+\begin{itemize}
+ \item uruchomianie skryptu
+ \item zapis i odczyt plików z dysku
+ \item czyszczenie pola wprowadzania testu i pola wyjściowego
+ \item prosty mechanizm przeszukiwania tekstu
+ \item zakończenie pracy edytora
+\end{itemize}
+
+Ważnym aspektem modułu jest fakt, że zarówno interpreter, jak i edytor korzystają z tej samej instancji silnika JavaScript. Oznacza to, że działania wykonane na jednym panelu widoczne są w drugim. Nie stoi nic na przeszkodzi, aby konfiguracje robota przeprowadzić za pomocą edytora skryptów, natomiast same sterowanie odbyło się za pomocą panelu interpretera.
+
+   \begin{figure}[ht]
+    \centering
+    \includegraphics[width=1\textwidth]{images/script}
+    \caption{Diagram klas modułu sterowania tekstowego }
+    \label{fig:script}
+   \end{figure}
+
+Wykorzystanie silnika języka interpretowanego umożliwię interfejs IShellInterpreter. Zastosowanie interfejsu nie wiąże programu z konkretnym silnikiem, umożliwia to w podłączenie dowolnego interpretera bez wprowadzania zmian w programie. Interfejs IBluetooth wywoływany jest poziomu samego JavaScriptu, w związku z czym nie jest powiązany z żadnym z obiektów w module.   
+
    \subsection{Użycie silnika JavaScript w aplikacji}
+
+Możliwość pisania skryptów wymagała użycia silnika jednego z języków skryptowych. Wybór padł na JavaScript, który główne zastosowanie ma w stronach internetowych. Język ten pozwala na pisanie pełnoprawnych aplikacji oraz realizacji dowolnego algorytmu. Głównym powodem była obecność silnika Nashorn w Java 8 . Jest on wydajną implementacją JavaScript pozwalającą łączyć funkcjonalność obu języków. 
+
+\begin{lstlisting}[style=java]
+public class JavaScriptInterpreter implements IShellInterpreter {	
+private final String InitialScript="src\\scripter\\cmd.js";
+// (...)
+private ScriptEngine engine;
+// (...)
+public JavaScriptInterpreter()
+ {
+	engine =new ScriptEngineManager().getEngineByName("nashorn");
+	stringWriterInit();
+	engine.getContext().setWriter(stringWriter);
+		
+	loadInitScript();		
+}
+//(...)
+\end{lstlisting}
+
+Java 8 udostępnia możliwość stworzenia obiektu klasy ScriptEngine, który zarządza silnikiem JavaScript. Konstruktor obiektu ustawia jako strumień wyjściowy obiekt  tekstowy  stringWriter powiązany z oknem aplikacji oraz uruchamia skrypt początkowy, umieszczając tym samym w przestrzeni JavaScript definicję funkcji używane przy komunikacji z robotem.
+Uruchamianie kodu JavaScript
+\begin{lstlisting}[style=java]
+@Override
+public Stringe valuateCommand(Stringcommand) throws ScriptException {
+	engine.eval(command);
+	String res = stringWriter.toString();
+	stringWriter.getBuffer().setLength(0);
+	return res;
+}
+(...)
+@Override
+public void runStript(Stringtext, Boolean isFromFile) throws Exception{
+	stringWriter.setIsEvent(true);
+	if(isFromFile)
+		engine.eval(newFileReader(text));
+	else
+		engine.eval(text);
+	stringWriter.setIsEvent(false);
+		
+}
+
+\end{lstlisting}
+Przedstawione metody używane są przy wywoływaniu skryptów. Pierwsza funkcja używana jest przez panel interpretera. Po wykonaniu fragmentu kodu ( „engine.eval(command);”)czyści bufor a następnie umieszcza w nim dane odebrane z standardowego wyjścia silnika. Druga funkcja używana jest w edytorze skryptów. Pozwala na uruchamianie zarówno plików tekstowych jak i ciągów znaków. W tej metodzie przekierowanie strumienia wyjściowego opiera się na obsłudze generowanych prze obiekt stringWriter  zdarzeń.
+
+Fragment inicjalnego skryptu umożliwiającego kontakt z robotem:
+\begin{lstlisting}[style=java]
+var BluethoothClass = Java.type('bluethoothCtrl.BluetoothImp');
+var btObject = BluethoothClass.getInstance();
+//(...)
+function RobotSetVel(translate,rotate,time)
+{
+	var result =btObject.setVelocity(translate,rotate,time);
+	returndecode(result);
+}
+function RobotGetVel()
+{
+	var result = btObject.getVelocity();
+	returndecode(result);
+}
+//(...)
+\end{lstlisting}
+
+Sam inicjalny skrypt ładowany podczas konstruktora klasy opakowuje wszystkie metody interfejsu IBluethooth. Skrypt uzyskuję dostęp do klasy Java ( jedna z wspomnianych wcześniej możliwości silnika Nashorn ) oraz pobiera statyczny obiekt tej klasy. Każda funkcja wywołuje metodę z interfejsu  IBluethoot, a następnie zwraca zdekodowany do tablicy łańcuch znaków. Powodem, dla którego w interfejsie IBluethooth każda metoda zwraca ten typ jest fakt, że z poziomu JavaScript pobieranie zmiennej tekstowej działa zawsze zgodnie z oczekiwaniami, czego nie można powiedzieć o innych typach danych.
+
  \section{Moduł sterowania graficznego}
-   \subsection{Bazowy blok sterujący}
-   \subsection{Bloki sterujące dostępne w aplikacji}
-   \subsection{Synchronizacja aktywności bloków}
+
+Wykorzystanie potencjału sterowanie tekstowego wymaga podstawowej wiedzy programistycznej i poświęcenia czasu aby w pełni poprawnie przygotować skrypt. Poza tym moduł ten nadaje się do implementacji algorytmu poruszania się robota, niekoniecznie natomiast sprawdza się w sytuacji gdy chcemy , aby robot reagował na nasze działania w czasie rzeczywistym. Odpowiedzią  na ten problem jest moduł sterowania graficznego. Idea tego komponentu polega na wykorzystaniu bloków sterujących, które pozwalająca komunikację z robotem za pomocą interfejsu graficznego. Bloki sterujące pozwalają na zmianę konfiguracji robota, kontrolę  i wizualizację prędkości bez konieczności używanie komend tekstowych. 
+
+Główne okno modułu graficznego pozwala wybierać bloki, które chcemy aktualnie użyć przy sterowaniu robotem, spośród wszystkich dostępnych. Dodatkowo w menu umieszczone są dwie pomocnicze opcje pozwalające na dodawanie bądź usunięcie wszystkich bloków. Bloki sterujące są szczegółowo opisane w następnych podrozdziałach.
+
+\begin{center}
+  \includegraphics{images/metro_all}
+  \captionof{figure}{Okno modułu graficznego}
+\end{center}
+
+Samo okno aplikacji pozwala dynamicznie zarządzać blokami na ekranie. W zależności od rozmiaru okna bloki układają się w sposób, aby jak najefektywniej wykorzystać dostępną przestrzeń. Rozkład elementów można kontrolować poprzez kolejność dodawania bloków do głównego okna. Minimalizacja i zamknięcia okna wysyłają komendę stop do robota.
+
+ \subsection{Bazowy blok sterujący}
+
+\begin{center}
+  \includegraphics{images/bazowy}
+  \captionof{figure}{Bazowy blok sterujący}
+\end{center}
+
+Przycisk z krzyżykiem odpowiada za wyłączenie elementu i jest jednoznaczny z odznaczeniem elementu w głównym oknie modułowym. Przycisk aktywacji określa włączenie działania bloku i jest podstawowym mechanizmem w synchronizacji pracy. Współpraca bloków opisana jest w podrozdziale 4.4.3. Ich wymiary  są ustalone i nie podlegają modyfikacji. Blok może modyfikować udostępnione przez klasę BaseTile ciało elementu.
+
+Właściwości wspólne dla każdego elementu :
+\begin{itemize}
+  \item nazwa – każdy blok musi wprowadzić swoją unikalną nazwę
+  \item typ  - blok może by jednego z trzech typów
+  \begin{itemize}
+    \item STEROWANIE – element kontrolujący ( zadający) prędkość robota
+    \item WIZUALIZACJA – element wizualizujący faktyczną prędkość robota
+    \item KONFIGURACJA – element, który nie steruje prędkością, może natomiast zmieniać konfiguracje robota np. nastawy regulatora
+  \end{itemize}
+  \item definiuje podstawową funkcję aktywacji i dezaktywacji elementu. Element może rozszerzyć tą funkcjonalność, niemniej jednak musi wtedy wywołać funkcje klasy bazowej
+  \item definiuje funkcje wyłączenia elementu
+\end{itemize}
+
+\begin{center}
+  \includegraphics{images/metro}
+  \captionof{figure}{Diagram klas modułu sterowania graficznego}
+\end{center}
+
+Obiekt skojarzony z głównym oknem modułu zawiera listę obiektów ComponentPair łączących bloki sterujące oraz pola wyboru. Życiem obiektów implementujących zarządza obiekt głównej klasy. Kolejnym komponentem jest obiekt klasy BTHandler kieruje komunikacją pomiędzy modułem Bluetooth  a blokami sterującymi oraz jest odpowiedzialny za synchronizację pracy bloków sterujących. Klasa ta uzyskuje referencję do obiektów sterujących i komunikuje się z nimi przez interfejs BTObserver. Działanie poszczególnych bloków oraz synchronizacja ich pracy opisana jest w dalszej części rozdziału.
+
+\newpage
+\subsection{Bloki sterujące dostępne w aplikacji}
+
+W aplikacji stworzone zostały 3 bloki sterujące, po jednym w każdym typie. 
+
+\begin{description}
+  \item[Nazwa] Sterowanie Myszką
+  \item[Typ] STEROWANIE
+\end{description}
+
+   \begin{figure}[ht]
+    \centering
+    \begin{subfigure}{.45\textwidth}
+     \centering
+     \includegraphics[width=1\textwidth]{images/mause1}
+     \label{fig:mause1}
+    \end{subfigure}
+    \begin{subfigure}{.45\textwidth}
+     \centering
+     \includegraphics[width=1\textwidth]{images/metro2}
+     \label{fig:metro2}
+    \end{subfigure}
+    \caption{Sterowanie myszką}
+    \label{fig:Blok_ster}
+   \end{figure}
+
+Blok umożliwia zadawanie prędkości za pomocą myszki. W centralnej części elementu znajduje się obszar obramowany czarowną linią i główny panel sterowania. Naprowadzenie kursora spowoduje zmianę koloru z szarego na biały, natomiast kliknięcie myszką rozpocznie sterowanie. Po rozpoczęciu sterowania nad kursorem pojawi się napis określający zadaną prędkość translacji i rotacji robota wyrażony w cm/s. Punkt zerowy jest w miejscu kliknięcia, które rozpoczyna sterowanie robotem. Na głównym panelem znajduje się informator aktualnego stanu bloku. Pod głównym panelem jest możliwość ustawienia przeskalowania ruchu myszki ( zmiana o ilości pikseli ) na zadaną prędkość. Praktyka pokazuje, że lepiej steruje się robotem, gdy przeskalowanie translacji jest większe niż rotacji.  Przesunięcie myszki w pionie zmienia rotację, natomiast przesunięcie w poziomie zmienia zadaną rotację. Można zadawać prędkości zarówno dodatnie jak i ujemne. Ponowne kliknięcie, bądź wyjście kursora poza panel główny powoduje zakończenie sterowania.
+\newpage
+\begin{description}
+  \item[Nazwa] Prękościomierz
+  \item[Typ] WIZUALIZACJA
+\end{description}
+
+   \begin{figure}[ht]
+    \centering
+    \begin{subfigure}{.45\textwidth}
+     \centering
+     \includegraphics[width=1\textwidth]{images/speed1}
+     \label{fig:speed1}
+    \end{subfigure}
+    \begin{subfigure}{.45\textwidth}
+     \centering
+     \includegraphics[width=1\textwidth]{images/speed2}
+     \label{fig:speed2}
+    \end{subfigure}
+    \caption{Blok prędkościomierza}
+    \label{fig:blok_wiz}
+   \end{figure}
+
+Prędkościomierz pokazuje aktualną prędkość robota. Lewy panel odpowiada za wyświetlenie prędkości natomiast prawy za formę w jakiej prędkość ma być wyświetlana. Za pomocą prędkościomierza może ustawić jednostkę w jakiej chcemy prezentować  prędkość:
+\begin{itemize}
+ \item centymetry na sekundę(domyślnie)
+ \item metry na sekundę 
+ \item kilometry na godzinę
+\end{itemize}
+Kolejną opcją jest ustawienie formy wyświetlenia prędkości:
+\begin{itemize}
+ \item prędkość translacji i rotacji robota ( domyślnie)
+ \item prędkość lewego i prawego koła robota
+\end{itemize}
+
+\newpage
+\begin{description}
+  \item[Nazwa] Konfiguracja
+  \item[Typ] KONFIGURACJA
+\end{description}
+
+   \begin{figure}[ht]
+    \centering
+    \begin{subfigure}{.45\textwidth}
+     \centering
+     \includegraphics[width=1\textwidth]{images/conf1}
+     \label{fig:conf1}
+    \end{subfigure}
+    \begin{subfigure}{.45\textwidth}
+     \centering
+     \includegraphics[width=1\textwidth]{images/conf2}
+     \label{fig:conf2}
+    \end{subfigure}
+    \caption{Konfiguracja robota}
+    \label{fig:Blok_ster}
+   \end{figure}
+
+Prędkościomierz pokazuje aktualną prędkość robota. Lewy panel odpowiada za wyświetlenie prędkości natomiast prawy za formę w jakiej prędkość ma być wyświetlana. Za pomocą prędkościomierza może ustawić jednostkę w jakiej chcemy prezentować  prędkość:
+\begin{itemize}
+ \item parametr (pierwsza kolumna) : określa ustawionyparametr
+ \item komponent (druga kolumna) : określa czy dany parametr dotyczy konfiguracji robota czy aplikacji 
+ \item aktualna wartość (trzecia kolumna):pokazuje aktualnie ustawiony parametr
+ \item wartość do ustawienie(czwarta kolumna):jedyna  gdzie pola można modyfikować. Pozwala na wpisanie wartości, którą będziemy mieli możliwość ustawić
+\end{itemize}
+Kolejną opcją jest ustawienie formy wyświetlenia prędkości:
+\begin{itemize}
+ \item ustawianie timera zabezpieczającego przed utratą łączności Bluetooth ( Timeout)
+ \item ustawianie timera aktualizacji prędkości(Encoder) oraz interwału regulatora(Regulation)
+ \item ustawienie timera modułu graficznego (Timer) , omówiony szczegółowo w podrozdziale 4.4.3
+\end{itemize}
+
+\newpage
+  \subsection{Synchronizacja aktywności bloków}
+
+Architektura blokowa modułu graficznego pozwala na tworzenie nieograniczonej ilości bloków sterujących dowolnie wybranego typu. Kontrolowanie prędkości robota może być, oprócz sterowania myszką realizowane przez klawiaturę, joystick czy nawet komendy głosowe. Konfigurowanie robota również może przyjmować wiele różnych form. Z tego powodu wymagane było wprowadzenie mechanizmu synchronizacji pracy bloków. Klasa, która odpowiada za zarządzanie blokami sterującymi jest  wspomniany już BTHandler. Oprócz synchronizacji klasa ta bierze odpowiedzialność za kontrolowanie  dostępu do komponentu Bluetooth dla bloków funkcyjnych.  
+
+Podstawowym elementem, służącym synchronizacji jest przytoczony wcześniej mechanizm aktywacji. Aby działanie komponentu było możliwe, musi być on aktywowany. Uruchomienie elementu następuje w dwóch etapach. Pierwszy jest w obszarze obiektu klasy BTHandler. Obiekt posiada informacje o wszystkich blokach w aplikacji i aktywowanie komponentów podlega niżej wymienionym zasadom:
+
+\begin{itemize}
+ \item aktywny może być tylko jeden komponent typu STEROWANIE lub KONFIGURACJA. Uruchomienie więcej niż jednego komponentu tego typu powoduje dezaktywacje bloku aktualnie pracującego
+ \item aktywnych może być dowolna ilość bloków typu WIZUALIZACJA
+ \item timer modułu graficznego rozpoczyna odliczanie gdy przynajmniej jeden komponent typu STEROWANIE lub WIZUALIZACJA jest aktywny, a wyłącza się gdy nie jest aktywny żaden z tych elementów
+ \item wyłączenie elementu powoduje jego automatyczną dezaktywację
+ \item minimalizacja lub wyłączenie okna powoduje dezaktywację wszystkich elementów
+\end{itemize}
+
+Drugi etap aktywacji realizowany jest w przestrzeni danego bloku i przygotowuje go do pracy. Wymiana danych  bloków typu STEROWANIE  i WIZUALIZACJE jest  cyklicznie uruchamiana przez, wymieniony już wcześniej,  timer aplikacyjny. Licznik ten co podany okres uruchamia swoją funkcję obsługi:
+
+\begin{lstlisting}[style=java]
+Private class Task implements ActionListener
+{
+private int currentVal =0;
+private const int typeNumber = 1; 
+double[] velocity;
+		
+private void iterate CurrentVal()
+{
+	if(currentVal != typeNumber)
+		currentVal++;
+	else
+		currentVal =0;
+}
+		
+@Override
+public void actionPerformed(ActionEvent e) {
+try{	
+	if(setSpeedObs !=null && currentVal ==0)
+	{
+		velocity = setSpeedObs.update(null);
+		bluethooth.setVelocity(velocity[0], velocity[1], 0);
+		System.out.println("SET Tr: "+velocity[0]+" Rot: "+ velocity[1]);
+	}
+	if(!getSpeedObs.isEmpty() && currentVal ==1)
+	{
+		String tmp = bluethooth.getVelocity();
+		velocity =GeneralConverter.deserializeStr2Dbl(tmp);
+		System.out.println("GET Tr: "+velocity[0]+" Rot: "+ velocity[1]);
+		for(BTObserver obs : getSpeedObs)
+			obs.update(velocity);
+	}
+				
+	}catch(SerialPortException serial E) {}
+		System.err.println("Bluetooth transmission error!!!");	
+	}
+}
+\end{lstlisting}
+Obsługa przepełnienia timera naprzemienne aktualizuje włączony blok sterujący i  wszystkie bloki pobierające aktualną prędkość.
 
 \chapter{Protokół komunikacyjny}  
 
+Protokół komunikacyjny używany do wymiany danych pomiędzy robotem, a aplikacją składa się z 15 wiadomości kontrolnych. Wiadomości pozwalają  pobierać i ustawiać dane na robocie. W większości występują w parach ustaw/pobierz. Protokół nie zakłada istnienia wiadomości jednocześnie zmieniających stan robota i pobierających aktualny stan. Prawidłowa odpowiedź na komendę typu ustaw jest identyczna do odebranej komendy, natomiast obsługa wiadomości typu pobierz nie ujmuje pod uwagę pól danych odebranej komendy.
+
+Wiadomość składa się z 10 bajtów:
+\begin{table}[!htb]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+Nr bajtu          & 0   & 1  & 2    & 3    & 4   & 5    & 6    & 7    & 8    & 9   \\ \hline
+Rodzaj wiadomości & "B" & ID & Dane & Dane & "M" & Dane & Dane & Dane & Dane & "E" \\ \hline
+\end{tabular}
+\end{table}
+
+Bajty 0, 4 i 9 w każdej wiadomości  są stałe i są równe wartości danej litery w kodzie ASCII. Służą one do kontroli poprawności przesłanej wiadomości.
+
+Bajt 1 określa identyfikator danej wiadomości i na jego podstawie oprogramowanie robota jest w stanie uruchomić odpowiednią funkcję obsługi przesłanej wiadomości. Zostało to zaprezentowane w rozdziale 3.4.
+
+Reszta bajtów przenosi dane konkretnej wiadomości. Wiadomości pozwalają na kodowanie liczby zmiennoprzecinkowej, jak również większych niż 1 bajt liczb całkowitych.
+
  \section{Spis wiadomości kontrolnych}   
 
+Każda wiadomość kontrolna przedstawiona jest według poniższego schematu:
+\begin{table}[!htb]
+\centering
+\caption{My caption}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+\hline
+\multicolumn{3}{|l|}{Nazwa Wiadomości} & \multicolumn{3}{l|}{Komenda Javascript} & \multicolumn{2}{l|}{Typ} & \multicolumn{2}{l|}{ID} \\ \hline
+BAJT 0      & BAJT 1      & BAJT 2     & BAJT 3      & BAJT 4      & BAJT 5      & BAJT 6      & BAJT 7     & BAJT 8     & BAJT 9     \\ \hline
+\multicolumn{10}{|c|}{CHARAKTERYSTKA WIADMOSCI}                                                                                       \\ \hline
+\end{tabular}
+\end{table}
+
+Dla wielkości USTAW w drugim wierszu zaprezentowana jest komenda którą odbiera robot, dla wiadomości typu POBIERZ jest to odpowiedź otrzymywana przez aplikację sterującą.
   
   \chapter{Prezentacja możliwości wykonanego projektu}
 
