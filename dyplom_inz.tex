@@ -129,15 +129,14 @@
 %poniżej znajduje się przykładowa treść dalszej części dokumentu, zainteresowanych zachęcam do rozszyfrowania frazy "Lorem ipsum" :)
 \chapter{Wprowadzenie}
 
-Robot mobilny klasy 2,0 jest robotem posiadającym dwukołowy napęd różnicowy. Przemieszczania robota umożliwia sterowanie prędkością obrotu koła przymocowanego do danego napędu bez możliwości zmiany kierunku ułożenia koła w  stosunku do platformy robota. 
-
+Robot mobilny klasy 2,0 jest robotem posiadającym dwukołowy napęd różnicowy. Roboty mobilnę charakteryzują się ilocią sterowań napędem oraz jego kierunkiem. Skonstruoane rozwiązanie jest jednym z najpopularniejszych  w robotyce. Robot posiada możłiwoć sterowania niezależnego steroaia prędkocią obrotową każdega z koł, bez możlliwoci zmiany ich orentacji.  
  \section{Cel projektu}
 
-Celem projektu było zbudowanie fizycznego robota mobilnego 2.0 wraz z napisaniem oprogramowania na mikrokontroler oraz aplikacji, która umożliwia zdalne sterowanie robotem. Komunikacja pomiędzy platformą mobilną a programem sterującym oparta jest na standardzie Bluetooth. Celem pracy było umożliwianie  jak największej interakcji z robotem zarówno w czasie rzeczywistym, jak i za pomocą komend tekstowych, z możliwością pisania skryptów. Główny nacisk położony został na rozwinięcie niezawodnego i rozszerzalnego oprogramowania zarówna na platformie mobilnej, jak i aplikacji desktopowej. 
+Celem projektu było zbudowanie fizycznego robota mobilnego 2.0 wraz z napisaniem oprogramowania na mikrokontroler oraz aplikacji, która umożliwia zdalne sterowanie robotem. Projekt wymagał wybrania sposobu komunikacji bezprzewodowej. Wybór padł na standard Bluetooth, co wynikał z popularności rozwiązania, dużej dostępności rozwiązań sprzętowych oraz programowych. Głównycm celem pracy było umożliwienie  jak największej interakcji z robotem zarówno w czasie rzeczywistym, jak i za pomocą komend tekstowych, z możliwością pisania skryptów. Główny nacisk położony został na rozwinięcie niezawodnego i rozszerzalnego oprogramowania zarówna na platformie mobilnej, jak i aplikacji desktopowej. 
 
  \section{Założenie projektowe} 
 
-Projekt zakłada przygotowanie modelu mechanicznego zawierającego dwukołowy napęd różnicowy wraz z  układem elektronicznym umożliwiającym sterowanie silnikiem prądu stałego, jak również odczytem prędkości obrotu wału silnika. W układzie elektronicznym konieczny jest moduł Bluetooth umożliwiający komunikację szeregową z mikrokontrolerem. Oprogramowanie mikrokontrolera osadzonego na robocie zawiera:
+Projekt zakłada przygotowanie modelu mechanicznego zawierającego dwukołowy napęd różnicowy wraz z  układem elektronicznym umożliwiającym sterowanie silnikiem prądu stałego, jak również odczytem prędkości obrotu wału silnika. W układzie elektronicznym konieczny jest moduł Bluetooth umożliwiający komunikację szeregową z mikrokontrolerem. Oprogramowanie mikrokontrolera zawiera:
 \begin{itemize}
   \item komunikację dwukierunkową interfejsu szeregowego
   \item asynchroniczną reakcję na otrzymane wiadomości z zewnątrz
@@ -146,18 +145,18 @@ Projekt zakłada przygotowanie modelu mechanicznego zawierającego dwukołowy na
   \item zabezpieczenie przed utratą transmisji
 \end{itemize}
 
-Aby możliwa była komunikacja między robotem a otoczeniem z zewnątrz wymagane jest przygotowanie protokołu komunikacyjnego dającego aplikacji interfejs na którym może operować. Protokół zawiera wiadomości typu pobierz/zapisz które pozwalają na pobranie z robota wartości i ich nadpisanie. Aplikacja sterująca, zgodnie z celem projektu, ma umożliwiać szeroki zakres form sterowania, opierając się na wyżej wymienionym protokole. Oprogramowanie sterujące zakłada:
+Aby możliwa była komunikacja między robotem a otoczeniem z zewnątrz wymagane jest przygotowanie protokołu komunikacyjnego dającego aplikacji interfejs na którym może operować.Zdecydowanno się na implementację komunikacji typu klient-serwer, w której platforma mobilna realizuje komendy aplikacji sterującej. Aplikacja sterująca, zgodnie z celem projektu, ma umożliwiać szeroki zakres form sterowania, opierając się na wyżej wymienionym protokole. Oprogramowanie sterujące zakłada:
 \begin{itemize}
   \item możliwość zapisu i odczytu danych w standardzie Bluetooth poprzez wirtualny port COM
   \item możliwość sterowania robotem za pomocą komend tekstowych. Punkt ten zakłada przygotowanie modułu interpretera do wprowadzania komend/skryptów oraz wykorzystanie silnika języka JavaScript
-  \item możliwość sterowania w trybie graficznym za pomocą myszki, wizualizacja prędkości oraz konfiguracja robota
+  \item możliwość sterowania w czasie rzeczywistym udostępniając intefejs graficzny
 \end{itemize}
 
 \chapter{Konstrukcja sprzętowa}
 
  \section{Platforma mechaniczna}
 
-Platforma mechaniczna robota oparta jest o model Zumo Chassis Kit firmy Pololu. Podstawa mechaniczna zaprojektowana została do konstrukcji robotów o napędzie różnicowym wyposażonym w miniaturowe silniki elektryczne prądu stałego tej samej firmy. Model wyposażony jest w gąsienicowy układ bieżny. Główną zaletą tego rozwiązania jest zwiększenia powierzchni styku z podłożem, co zwiększa przyczepność i zmniejsza prawdopodobieństwo poślizgu poprzecznego. Jest szczególnie istotne w przypadku użycia odometrii przy pomiarze prędkości robota. Platforma skonstruowana została z myślą o używaniu baterii AA, do zasilania robota. Projekt zakładał jednak zastosowanie akumulatora LiPol jako źródła energii. Konstrukcja napędu, jak również rozmiar i cena były przyczyną wykorzystania właśnie tego modelu.
+Platforma mechaniczna robota oparta jest o model Zumo Chassis Kit firmy Pololu. Konstrukcja zaprojektowana jest z myślą o wykorzystaniu innyh produktów spod znaku tej firmy, przed wszystkim silników prądu stałego. Z tego powodu umożliwia ona pełną i bezproblemową integrację z zastosowanym napędem. Najważniejszym elementem modelu jest obecność gąsienicowego układu bieżnego. Zwiększa to powierzchnię styku z podłożem, co polepsza przyczepność i zmniejsza prawdopodobieństwo poślizgu poprzecznego, co ma szczególne znaczenie w przypadku pomiaru prędkości odometrią. 
 
    \begin{figure}[ht]
     \centering
@@ -170,7 +169,7 @@ Platforma mechaniczna robota oparta jest o model Zumo Chassis Kit firmy Pololu. 
     \begin{subfigure}{.45\textwidth}
      \centering
      \includegraphics[width=1\textwidth]{images/silnik_enc}
-  	 \captionof{figure}{SLinik wrazz enkoderem}
+  	 \captionof{figure}{Silnik wraz enkoderem}
      \label{fig:silnik_enc}
     \end{subfigure}
     \caption{Gotowy moduł nadajnika}
@@ -179,13 +178,13 @@ Platforma mechaniczna robota oparta jest o model Zumo Chassis Kit firmy Pololu. 
 
 Wymiary modelu mechanicznego:
 \begin{itemize}
-  \item wymiary pełnego modelu: 86[mm] x 98[mm]
-  \item odległość pomiędzy kołami (pomiar od środka gąsienicy): 7.5[6mm]
-  \item przestrzeń na podstawę elektroniczną:71[mm] x 80[mm]
-  \item średnica koła: 1.56[mm]
+  \item wymiary pełnego modelu: 8.6[cm] x 9.8[cm]
+  \item odległość pomiędzy kołami (pomiar od środka gąsienicy): 7.56[cm]
+  \item przestrzeń na podstawę elektroniczną:7.1[cm] x 8.0[cm]
+  \item średnica koła: 1.56[cm]
 \end{itemize}
 
-Napędami są miniaturowe silniki Pololu HP z dwustronną osią. Silnik posiada przekładnie 50:1 co ogranicza prędkość obrotową wału silnika zwiększając jednocześnie jego moment. Obustronny wał pozwala na wygodny montaż enkoderów, czyli czujników wykorzystywanych przy pomiarze prędkości obrotowej silnika. Parametry silnika:
+Napędami są miniaturowe silniki Pololu HP z dwustronną osią. Silnik posiada przekładnię 50:1 co ogranicza prędkość obrotową wału silnika, zwiększając jednocześnie jego moment. Obustronny wał pozwala na wygodny montaż enkoderów, wykorzystywanych przy pomiarze prędkości obrotowej silnika. Parametry silnika:
 
 \begin{itemize}
   \item Maksymalne napięcie pracy: 9[V]
@@ -194,7 +193,7 @@ Napędami są miniaturowe silniki Pololu HP z dwustronną osią. Silnik posiada 
   \item Maksymalny prąd dla napięcia 6[V]: 1600[mA]
 \end{itemize}
 
-Wybór silnika podyktowany był nie tylko możliwościami jakie oferuje, ale przed wszystkim pełną iteracją z modelem mechanicznym oraz enkoderami (montaż zaprezentowany jest na rysunku powyżej). Dzięki temu konstrukcja była przebiegła szybciej i w dużym stopniu zapobiegła wszelkim błędom montażom. 
+Wybór silnika podyktowany był nie tylko możliwościami jakie oferuje, ale przed wszystkim pełną integracją z modelem mechanicznym oraz enkoderami (montaż zaprezentowany jest na rysunku powyżej). Użycie dedykowanych elementów przyśpieszyło konstrukcję modelu oraz i zapobiegło błędom montażowym.
 
  \section{Konstrukcja elektroniczna}
 Na konstrukcje elektroniczną robota składają się 4 moduły:
@@ -213,7 +212,7 @@ Na konstrukcje elektroniczną robota składają się 4 moduły:
    \label{fig:nucleo}
   \end{figure} 
 
-Elektronika robota opera się o układ Nucleo F401RE.Sercem układu jest mikrokontroler STM32F401.Posiada on 32-bitową architekturę opartą o rdzeń ARM Cortex M-4 i może być taktowany do 84 MHz. Wydajna jednostka obliczeniowa wraz z sprzętową obsługą operacji na liczbach zmiennoprzecinkowych była kluczowa przy realizacji projektu.  Oprócz szybkiego przetwarzania danych od mikrokontrolera wymagane była sprzętowa realizacja komunikacji szeregowej oraz duża liczba timerów. Obecny mikrokontroler posiada kontroler DMA (ang. Direct Memory Access),pozwalający przeprowadzać transmisję danych bez obciążania procesora, jak również 10 sprzętowych timerów, co pokrywa wymagania projektowanego systemu.
+Elektronika robota opera się o układ Nucleo F401RE.Sercem układu jest mikrokontroler STM32F401.Posiada on 32-bitową architekturę opartą o rdzeń ARM Cortex M-4 i może być taktowany do 84 MHz. Wydajna jednostka obliczeniowa wraz z sprzętową obsługą operacji na liczbach zmiennoprzecinkowych była kluczowa przy realizacji projektu.  Oprócz szybkiego przetwarzania danych od mikrokontrolera wymagane była sprzętowa realizacja komunikacji szeregowej oraz duża liczba timerów.  Mikrokontroler posiada kontroler DMA (ang. Direct Memory Access),pozwalający przeprowadzać transmisję danych bez obciążania procesora, jak również 10 sprzętowych timerów, co pokrywa wymagania projektowanego systemu.
 Parametry STM32F401:
 \newline Parametry STM32F401:
 \begin{itemize}
@@ -224,8 +223,8 @@ Parametry STM32F401:
   \item Interfejsy: 3x I2C, 3x USART, 4x SPI, USB 2.0 Full Speed
 \end{itemize}
 
-Nie licząc wypowadzeńpinów mikrokontrolera, istotnymi elementami w Nucleo F401RE są stabilizatorynapięcia na 3.3V i 5V z możliwością zasilania bateryjnego od 9V do 12V oraz progrmator/debuger ST-Link v2 . 
-\\Komunikacja bezprzewodowa umożliwia moduł HC-05. Techniczne szczegóły opisane są w rozdziale 3.3. Najważniejsze parametry HC-05:
+Nie licząc wypowadzeńpinów mikrokontrolera, istotnymi elementami w Nucleo F401RE są stabilizatorynapięcia na 3.3V i 5V z możliwością zasilania bateryjnego od 9V do 12V oraz programator/debuger ST-Link v2 . 
+\\Komunikację bezprzewodową w standardzie Bluetooth umożliwia moduł HC-05. Techniczne szczegóły opisane są w rozdziale 3.3. Najważniejsze parametry HC-05:
 \begin{itemize}
   \item Napięcie zasilania: 3.3[V]
   \item Zasięg: do 10[m]
@@ -233,7 +232,7 @@ Nie licząc wypowadzeńpinów mikrokontrolera, istotnymi elementami w Nucleo F40
   \item Standard: Bluetooth 2.0 + EDR
 \end{itemize}
 
-Odczyt prędkości realizowany jest przez enkodery magnetyczneMagnetic Encoder Pair Kit for Micro Metal Gearmotors formy Pololu. Wybór jest wynikał głównie z wyżej wspomnianej integracji z elementami mechanicznymi robota. Podstawą fizyczną działania magnetycznych enkoderów inkrementacyjnych jest efekt Halla.
+Odczyt prędkości realizowany jest przez enkodery magnetyczneMagnetic Encoder Pair Kit for Micro Metal Gearmotors formy Pololu. Wybór wynikał z wyżej wspomnianej integracji z elementami mechanicznymi robota. Podstawą fizyczną działania magnetycznych enkoderów inkrementacyjnych jest efekt Halla.
 
    \subsection{Bazowy obwód}
    \begin{figure}[ht]
@@ -243,8 +242,7 @@ Odczyt prędkości realizowany jest przez enkodery magnetyczneMagnetic Encoder P
     \label{fig:schemat_elekt}
    \end{figure}
 
-Układ elektroniczny zaprojektowany został w programie CircuitMaker firmy Altium. Zadaniem układu było połączenie modułu Nucleo z wyprowadzeniami enkoderami i umieszczenie sterownika silnika. Powszechnym sposobem kontroli silnika prądu stałego jest zastosowanie mostka H. Układ ten pozwala na sterowanie kierunkiem przepływu prądu przez silnik. Funkcja realizowana jest przez układ scalony TB6612FNG, który pozwala na kontrole kierunku obrotów dwóch silników oraz regulacje ich prędkości sygnałem PWM (ang. Pulse Width Modulation). Sygnał zasilający silniki oraz wyprowadzenia enkoderów połączone z układem jest za pośrednictwem złącza micromatch . Wszystkie sygnały podłączone są do mikrokontrolera przez wyprowadzenia Nucelo.
- 
+Układ elektroniczny zaprojektowany został w programie CircuitMaker firmy Altium. Układ łączy wyprowadzenia Nucleo z enkodermi i silnikami (poprzez sterownik). Powszechnym sposobem kontroli silnika prądu stałego jest zastosowanie mostka H. Układ ten pozwala na sterowanie kierunkiem przepływu prądu przez silnik. Funkcja realizowana jest przez układ scalony TB6612FNG, który pozwala na kontrole kierunku obrotów dwóch silników oraz regulacje ich prędkości sygnałem PWM (ang. Pulse Width Modulation). Sygnał zasilający silniki oraz wyprowadzenia enkoderów połączone z układem jest za pośrednictwem złącza micromatch.
 \chapter{Oprogramowanie robota mobilnego}
  \section{Struktura oprogramowania}
    \begin{figure}[ht]
@@ -254,11 +252,11 @@ Układ elektroniczny zaprojektowany został w programie CircuitMaker firmy Altiu
     \label{fig:ogol}
    \end{figure}
 
-Oprogramowanie napisane jest w języku C korzystając z bibliotek HAL (Hardware Abstraction Layer) udostępnionych przez firmę STMicroelectronics. Powyższy schemat pokazuje rozwiązanie podstawowej funkcjonalności robota, czyli regulacji prędkości. Stan robota wyrażonych jest zmiennych globalnych, które poszczególne procedury modyfikują wartość. Cienkie strzałki wskazują kierunek przepływu danych, natomiast grube wskazują na przerwania sprzętowa wyzwalające dane funkcję obsługi. Bezpośrednia zmiana wypełnienia sygnału PWM oraz kierunek obrotu silników za pomocą wiadomości została zaznaczona linią przerywaną. Modyfikacja tych wartości nie jest możliwa podczas trybu regulacji prędkości i wymaga wyłączenia tej procedury( Zagadnienie jest omówione w rozdziale piątym). Przedstawione na schemacie procedury opisane są w dalszej części tego rozdziału. 
-
+Oprogramowanie napisane jest w języku C w wykorzystaniem bibliotek HAL (Hardware Abstraction Layer) udostępnionych przez firmę STMicroelectronics. Powyższy schemat ilustruje działanie podstawowej funkcjonalności robota, czyli regulację prędkości. 
+Centralny blok odzwierciedla aktualny stan robota, zrealizowany z pomocą zmiennych globalnych. Strałki oznaczają kierunek przepływu danych pomędzy poszczególnymi komponentami. Grube strzałki repezentują zdarzenie wywzalające działanie danego komponentu. Linią przerywaną wyróżniona zostałą niestandardowa operacja, która bez uprzedniej zmiany konfiguracji robota, nie jest możliwa podczas procesu regulacji(więcej na tan temat znajduję sie w rodziale piątym). Poszczególne bloki zostały szczegółowe opisane w dalszej częsci tego rozdziału.
  \section{Konfiguracja mikrokontrolera}
 
-Konfiguracja mikrokontrolera wykonana jest przy użyciu oprogramowania STMCubeMX. Pozwala one w bezpieczny i wygony sposób dokonać konfiguracji.
+Konfiguracja mikrokontrolera wykonana jest przy użyciu oprogramowania STMCubeMX. Pozwala one w bezpieczny i wygodny sposób dokonać konfiguracji.
 
    \begin{figure}[ht]
     \centering
@@ -287,14 +285,14 @@ Oprogramowanie wykorzystuje 7 sprzętowych timerów, obsługę transmisji szereg
 
  \section{Realizacja komunikacji Bluetooth}
 
-Komunikacja Bluetooth wykorzystuje obsługę dwóch komponentów mikrokontrolera, interfejsu szeregowo UART oraz technika DMA. UART (Universal Asynchronous Receiver and Transmitter) umożliwia asynchroniczne wysyłanie i odbieranie danych przez port szeregowy. Wykorzystanie modułu Bluetooth ogranicza się do połączenia linii danych  TX (wysyłanie) mikrokontrolera z linią danych RX (odbiór) układu HC-06 oraz analogicznie linii RX mikrokontrolera z linią TX modułu. Transmisja bezprzewodowa jest przezroczysta z poziomu mikrokontrolera. Interfejs UART konfigurowany jest przed podanie 4 wartości określających transmisję:
+Komunikacja Bluetooth wykorzystuje obsługę dwóch komponentów mikrokontrolera, interfejsu szeregowego UART oraz technikę DMA. UART (Universal Asynchronous Receiver and Transmitter) umożliwia asynchroniczne wysyłanie i odbieranie danych przez port szeregowy. Wykorzystanie modułu Bluetooth ogranicza się do połączenia linii danych  TX (wysyłanie) mikrokontrolera z linią danych RX (odbiór) układu HC-06 oraz analogicznie linii RX mikrokontrolera z linią TX modułu. Transmisja bezprzewodowa jest przezroczysta z poziomu mikrokontrolera. Interfejs UART konfigurowany jest przez podanie 4 wartości określających transmisję:
 \begin{itemize}
   \item prędkość transmisji (ang. Baud rate)
   \item długość słowa
   \item ilość bitów stopu
   \item bit parzystości (kontrola błędów odbiory danych )
 \end{itemize}
-Zdecydowałem się na użycie standardowej konfiguracji prędkość: 9600, 8-bitowe słowo, jeden bit stopu, brak bitów parzystości.
+Wykorzystana została standardowa konfiguracja prędkości: 9600, 8-bitowe słowo, jeden bit stopu, brak bitów parzystości.
 \\DMA jest modułem który umożliwia bezpośredni dostęp do pamięci RAM i układów peryferyjnych. Układ DMA umożliwia transfer danych pomiędzy urządzeniem peryferyjnym a pamięcią RAM bez angażowania procesora, którego zadanie ogranicza się do konfiguracji urządzenia. Komponent został użyty do przesyłu i odbioru danych pomiędzy układem UART i dziesięciobajtowym obszarem pamięci RAM. Włączenie odbioru danych szeregowych z użyciem DMA:
 \begin{lstlisting}[style=c]
 int8_t command[10];
@@ -318,11 +316,11 @@ voidHAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		startBluetoothTimer();
 }
 \end{lstlisting}
-Funkcja jest przez bibliotekę HAL wywoływana dla zarejestrowanego przerwania od dowolnego interfejsu UART. Obiekt UART komponentu który wywołał przerwanie jest przekazywany jako argument funkcji. Z uwagi na to, że używany jest jeden interfejs szeregowy nie ma potrzeby sprawdzania czy to on jest źródłem przerwania. Funkcja tworzy tablicę bajtów - response, która wraz z kopią odebranej komendy przekazywana jest do funkcji obsługującej daną wiadomość. Wypełniona odpowiedź wysyłana jest tą samą techniką. Obsługa wiadomości oraz zastosowany timer opisany jest w dalszej części tego rozdziału.
-\\Problem, jaki należy rozważyć, w przypadku komunikacji asynchronicznej, jest sytuacja, w której wiadomość jest odbierana zanim wcześniejsza zostanie obsłużona. Dodatkową komplikacja, w tej sytuacji jest użycie DMA, które wypełnia wartości w pamięci z pominięcie pracy, a tym samym kontroli procesora. Praca, na tym samym obszarze pamięci, które wypełnia DMA, podczas obsługi, mogłaby skutkować zmianą wartości tablicy podczas odczytu z niej wiadomości. Z tego powodu, pierwszym etapem w obsłudze przerwania, jest utworzenie kopii tablicy commandi praca na duplikacie. To rozwiązanie, zwiększa stabilność przetwarzania wiadomości, ale nie rozwiązuje problemu całkowicie. Nowa wiadomość mogłaby pojawić się podczas tworzenia duplikatu, co znów generuje ten sam problem. Z pomocą przychodzi tutaj sprzętowa obsługa przerwańw mikrokontrolerach STM. Przetworzenie wiadomości wywoływana jest w obsłudze przerwania, które kończy się dopiero po zaaplikowaniu komendy. Kontroler przerwań NVIC, w przypadku takiego samego priorytetu, tworzy kolejkę LIFO przerwań i a następnie kolejno przekazuje sterowanie, po zakończeniu aktualnie wywołanej funkcji obsługi. Z tego powodu handler nie wywoła się przed zakończeniem przetwarzania bieżącej komendy. Poza wyżej wymienionymi zabezpieczeniami omawiany błąd eliminowany jest przez konstrukcję protokołu komunikacyjnego z aplikacją sterującą. Zgodnie z nim, aplikacja nie wysyła, następnej wiadomości bez otrzymania odpowiedzi na poprzednią, w przypadku prawidłowej wymiany danych, rozwiązuje ten problem.
+Funkcja jest uniwersalnym handlerem każdego przerwania generowanego przez interfejs szeregowy. Obiekt UART komponentu który wywołał przerwanie jest przekazywany jako argument funkcji. Z uwagi na to, że używany jest jeden interfejs szeregowy nie ma potrzeby sprawdzania czy to on jest źródłem przerwania. Funkcja tworzy tablicę bajtów - response, która wraz z kopią odebranej komendy przekazywana jest do funkcji obsługującej daną wiadomość. Obsługa wiadomości oraz zastosowany timer opisany jest w dalszej części tego rozdziału.
+\\Asynchroniczny sposób komunikacji z robotem może prowadzić do sytuacji, podczas której odebana zostanie wiadomość, zanim poprzednia zostanie obsłużona. Dodatkową komplikacją, w tej sytuacji jest użycie DMA, które wypełnia wartości w pamięci z pominięciem pracy, a tym samym kontroli procesora. Praca, na tym samym obszarze pamięci, które wypełnia DMA, podczas obsługi, mogłaby skutkować zmianą wartości tablicy podczas odczytu danych. Z tego powodu, pierwszym etapem w obsłudze przerwania, jest utworzenie kopii tablicy commandi praca na duplikacie. To rozwiązanie, zwiększa stabilność przetwarzania wiadomości, ale nie rozwiązuje problemu całkowicie. Nowa wiadomość mogłaby pojawić się podczas tworzenia duplikatu, co znów generuje ten sam problem. Z pomocą przychodzi tutaj sprzętowa obsługa przerwań w mikrokontrolerach STM. Przetworzenie wiadomości wywoływana jest w obsłudze przerwania, które kończy się dopiero, po zaaplikowaniu komendy. Kontroler przerwań NVIC, w przypadku takiego samego priorytetu, tworzy kolejkę LIFO przerwań, a następnie kolejno przekazuje sterowanie, po zakończeniu aktualnie wywołanej funkcji obsługi. Z tego powodu handler nie wywoła się przed zakończeniem przetwarzania bieżącej komendy. Poza wyżej wymienionymi zabezpieczeniami omawiany błąd eliminowany jest przez konstrukcję protokołu komunikacyjnego z aplikacją sterującą. Zgodnie z nim, aplikacja nie wysyła następnej wiadomości bez otrzymania odpowiedzi na poprzednią, w przypadku prawidłowej wymiany danych, rozwiązuje ten problem.
 
  \section{Proces przetwarzania wiadomosci}
-W poprzednim rozdziale zaprezentowana jest obsługa przerwania od zakończenia transmisji szeregowej. Obecna jest funkcja „commandHandler” odpowiedzialna za obsługę wiadomości i uformowanie odpowiedzi. Struktura  funkcji „commandHandler” ( dla czytelności pominąłem fragment funkcji,n gdyż nie wpływa to na zrozumienie jej działania):
+W poprzednim rozdziale zaprezentowana jest obsługa przerwania od zakończenia transmisji szeregowej. Obecna jest funkcja „commandHandler” odpowiedzialna za obsługę wiadomości i uformowanie odpowiedzi. Struktura  funkcji „commandHandler” ( dla czytelności fragment funkcji, został pominęty):
 \begin{lstlisting}[style=c]
 
 int8_t* commandHandler(int8_t* command,int8_t* response)
@@ -355,7 +353,7 @@ returninvalidMessage(response);
 \end{lstlisting}
 
 Działanie prezentowanej funkcji jest ściśle związane z protokołem komunikacyjnym pomiędzy robotem a aplikacją sterującą. Zagadnienie to jest szczegółowo opisane w rozdziale piątym. Początek funkcji sprawdza czy na odpowiednich pozycjach występują wartości stałe i charakterystyczne dla każdej wiadomości, w przeciwnym wypadku wysyłana jest wiadomość informująca o błędzie. Następnie na podstawie identyfikatora wiadomości wywoływana jest konkretna funkcja obsługująca daną wiadomość, a jeżeli podany identyfikator nie jest znany zwracany jest błąd. 
-\\Obsługa wiadomości zaprezentowana będzie na przykładzie komendy ustalające prędkość zadaną  w układzie regulacji:
+\\Obsługa wiadomości zaprezentowana na przykładzie komendy zadającej prędkość w układzie regulacji:
 \begin{lstlisting}[style=c]
 
 int8_t* setVelocityResponse(int8_t* command,int8_t* response)
@@ -439,7 +437,7 @@ return response;
 \end{lstlisting}
 
 
-Każda funkcja początkowo wypełnia odpowiedź zerami i wartościami stałymi. Dla wiadomości typu „ustaw” odpowiedź powinna być identyczna jak komenda przychodząca. Dzięki temu aplikacja sterująca może mieć pewność, że ustawione zostały podane wartości. Pobór fatycznych wartości ustawionych na robocie odbywa się za pomocą wiadomości typu „pobierz”.  Zaprezentowana wiadomość ustawia 3 pozycje: prędkość lewego koła, prędkość prawego koła (w cm/s ) oraz opcjonalnie czas trwania zadanego ruchu. Wiadomości ustawiające prędkość charakteryzują się jeszcze jedną właściwością. Mając wszystkie pola wartości  wypełnione zerami wywołuje się funkcja zatrzymania silników robota. Jest to jedna z form zabezpieczenia. Warunek ten jest sprawdzany od razu po uformowaniu odpowiedzi. Kolejnym etapem jest konwersja odpowiednich bajtów na liczbę zmiennoprzecinkową i zapis wartości do globalnej zmiennej określającej zadaną prędkość dla danego koła. Ostatnim etapem obsługi wiadomości jest ustawienie czasu trwania długości danego ruchu. Jeżeli pola nie są wypełnione zerami wystartuje timer z przesłanymi danymi ilościami milisekund, i po tym czasie zostaną zatrzymane silniki. W przeciwnym razie zadana prędkość będzie się utrzymywała aż do jej zmiany. Po zakończeniu procedury zwracany jest adres z odpowiedzią.
+Każda funkcja początkowo wypełnia odpowiedź zerami i wartościami stałymi. Dla wiadomości typu „ustaw” odpowiedź powinna być identyczna jak komenda przychodząca. Dzięki temu aplikacja sterująca może mieć pewność, że ustawione zostały podane wartości. Pobór fatycznych wartości ustawionych na robocie odbywa się za pomocą wiadomości typu „pobierz”.  Zaprezentowana wiadomość ustawia 3 pozycje: prędkość lewego koła, prędkość prawego koła (w cm/s ) oraz opcjonalnie czas trwania zadanego ruchu. Wiadomości ustawiające prędkość charakteryzują się jeszcze jedną właściwością. Mając wszystkie pola wartości  wypełnione zerami wywołuje się funkcja zatrzymania silników robota. Jest to jedna z form zabezpieczenia. Warunek ten jest sprawdzany od razu po uformowaniu odpowiedzi. Kolejnym etapem jest konwersja odpowiednich bajtów na liczbę zmiennoprzecinkową i zapis wartości do globalnej zmiennej określającej zadaną prędkość dla danego koła. Ostatnim etapem obsługi wiadomości jest ustawienie czasu trwania długości danego ruchu. Jeżeli pola nie są wypełnione zerami wystartuje timer z przesłanymi danymi ilościami milisekund i po tym czasie zostaną zatrzymane silniki. W przeciwnym razie zadana prędkość będzie się utrzymywała aż do jej zmiany. Po zakończeniu procedury zwracany jest adres z odpowiedzią.
 
  \section{Zabezpieczenia robota}
 
@@ -771,7 +769,7 @@ Wykorzystanie potencjału sterowanie tekstowego wymaga podstawowej wiedzy progra
 Główne okno modułu graficznego pozwala wybierać bloki, które chcemy aktualnie użyć przy sterowaniu robotem, spośród wszystkich dostępnych. Dodatkowo w menu umieszczone są dwie pomocnicze opcje pozwalające na dodawanie bądź usunięcie wszystkich bloków. Bloki sterujące są szczegółowo opisane w następnych podrozdziałach.
 
 \begin{center}
-  \includegraphics{images/metro_all}
+  \includegraphics[width=1\textwidth]{images/metro_all}
   \captionof{figure}{Okno modułu graficznego}
 \end{center}
 
@@ -917,7 +915,7 @@ Podstawowym elementem, służącym synchronizacji jest przytoczony wcześniej me
  \item wyłączenie elementu powoduje jego automatyczną dezaktywację
  \item minimalizacja lub wyłączenie okna powoduje dezaktywację wszystkich elementów
 \end{itemize}
-
+\newpage
 Drugi etap aktywacji realizowany jest w przestrzeni danego bloku i przygotowuje go do pracy. Wymiana danych  bloków typu STEROWANIE  i WIZUALIZACJE jest  cyklicznie uruchamiana przez, wymieniony już wcześniej,  timer aplikacyjny. Licznik ten co podany okres uruchamia swoją funkcję obsługi:
 
 \begin{lstlisting}[style=java]
@@ -1238,7 +1236,6 @@ Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą
 Ustawienie wartości T1 i T2 na zero oznacza wyłączenia regulatora i umożliwia nastawianie wartości wypełnienia PWM bezpośrednio na silniki. W przypadku wyłączonego timera, ustawienie wartości większej od zera włącza regulację prędkości.
 Działanie timera i opis regulacji prędkości opisany został w rozdziale 3.7
 
-
 \begin{table}[!htb]
 \centering
 \begin{adjustbox}{width=1\textwidth}
@@ -1255,15 +1252,160 @@ Wiadomość zwraca ustawioną wartość milisekund interwału regulatora prędko
 Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund interwału czasowego timera
 
 
-
-
   \chapter{Prezentacja możliwości wykonanego projektu}
+W tym rozdziale zaprezentowane została część możliwości jakie udostępnia stworzony projekt. Zachowanie robota zaprezentowane zostało w dołączonych plikach wideo. 
 
  \section{Dobór nastaw regulator}
+
+\begin{center}
+  \includegraphics{images/vregul}
+  \captionof{figure}{Autoregulacja}
+\end{center}
+
+Jednym z zastosowań, do jakich można wykorzystać możliwość pisania skryptów jest automatyczny dobór nastaw regulatora. Jest to przykład wykorzystania możliwości pisania skryptów do konfiguracji robota. Robot cyklicznie porusza się do przodu i do tyłu dokonując w każdej iteracji serie pomiarów prędkości. W każdej iteracji zmiana jest wartości nastaw regulatora w celu znalezienia takich, aby kryterium regulacji było jak najkorzystniejsze ( najmniejsze ). Do oceny układu regulacji użyto kryterium ITSE, które szczególny nacisk kładzie na czas regulacji:
+\begin{equation}\label{eq:aproksymacja}
+   \int_{0}^{\infty}t\left (e(t) \right )^{2}dt
+  \end{equation}
+
+\begin{lstlisting}[style=c]
+var Pmin = 70;
+var Dmin = 10;
+
+var Pmax = 128;
+var Dmax = 100;
+
+var Pbest = Pmin;
+var Dbest = Dmin;
+
+var Piteracje = 10;
+var Diteracje = Piteracje;
+
+var predkosc = 15.0;
+var czas = 3000; // ms
+var ilosc_pomiarow = 10;
+
+var bestkryterium = Infinity;
+
+function sleep(millis)
+ {
+  var date = new Date();
+  var curDate = null;
+  do { curDate = new Date(); }
+  while(curDate-date < millis);
+}
+
+function kryterium(pomiary,zadanaT,zadanaR)
+{
+	var suma = 0;
+	for(var i = 0; i < pomiary.length; i++)
+	{
+		suma += pomiary[i].czas * Math.pow(zadanaT - pomiary[i].predkoscT,2);
+		suma += pomiary[i].czas * Math.pow(zadanaR - pomiary[i].predkoscR,2);
+	}
+	
+	return suma;
+}
+
+function pomiar(predkoscT,predkoscR,czas)
+{
+	this.predkoscT = predkoscT;
+	this.predkoscR = predkoscR;
+	this.czas = czas;
+}
+
+RobotSetEncoder(60);
+RobotSetRegTim(150);
+for(var P = Pmin; P < Pmax; P += (Pmax - Pmin)/Piteracje)
+{
+	for(var D = Dmin; D < Dmax; D += (Dmax - Dmin)/Diteracje)
+	{
+		RobotSetConf(P,D);
+		RobotSetVel(predkosc,0,czas);
+		predkosc = - predkosc;
+		
+		var pomiary = [];
+		var interwal = czas/ilosc_pomiarow;
+		for(var i = 0; i < czas; i += interwal)
+		{
+			var tmp = RobotGetVel();
+			pomiary.push(new pomiar(tmp[0],tmp[1],i));
+			sleep(interwal);
+		}
+		var obecneKryterium = kryterium(pomiary,predkosc,0);
+		if(obecneKryterium < bestkryterium)
+		{
+			bestkryterium = obecneKryterium;
+			Pbest = P;
+			Dbest = D;
+		}
+	}
+}
+
+print('Nastawa P: '+Pbest);
+print('Nastawa D: '+Dbest);
+\end{lstlisting}
+
+Skrypt zakończył się wynikiem:  nastawa P : 99, nastawa D : 82.
+
  \section{Ustawianie trasy robota za pomocą skrypu}
+
+\begin{center}
+  \includegraphics{images/vkwadrat}
+  \captionof{figure}{zadawanie trajektorii}
+\end{center}
+
+W skrypcie możliwe jest zadanie długości boku oraz prędkości poruszania się wzdłuż krawędzi kwadratu i skrętu na wierzchołku. Czas wykonania ruchu jest obliczany a następnie robot wykonuje zadaną trajektorie. 
+Przykład pokazuje jak można wykorzystać jednostkę sterującą do wykonania obliczeń, których wyniki aplikowane są na robota. 
+
+\begin{lstlisting}[style=c]
+function calcTranslationTime(side,velocity)
+{
+	return Math.round( side / velocity * 1000 );
+}
+function calcRotationTime(velocity)
+{
+	return Math.round( Math.PI / velocity * 1000 ); 
+}
+
+var lengthOfTranslation = 30, // cm
+translationVelocity = 10.0, //cm/s
+traslationTime = calcTranslationTime(lengthOfTranslation,translationVelocity), //ms
+rotationVelocity = 2.0, // rad/s
+rotationTime = calcRotationTime(rotationVelocity); // ms
+
+RobotSetEncoder(60);
+RobotSetRegTim(150);
+RobotSetConf(100,82);
+
+for(var i = 0; i < 4; ++i)
+{
+	RobotSetVelWait(translationVelocity,0,traslationTime);
+	RobotSetVelWait(0,rotationVelocity,rotationTime);
+}
+\end{lstlisting}
+
+Odstępstwa od kształtu kwadratu spowodowane są niedokładnością układu regulacji, ale przede wszystkim eksploatacją mechaniczną samej konstrukcji. Podczas testów robot był wielokrotnie rozmontowywany co doprowadziło do delikatnego uszkodzenia jednej z gąsienic. Wynikiem była inna prędkość liniowa każdego Z kół przy jednoczesnej prędkości obrotowej, co stanowi duży problem przy regulacji prędkości liniowej robota.
+
  \section{Prezentacja graficznego sterowania}
+Zaprezentowany został sposób sterowania robotem za pomocą panelu graficznego. W pracy załączony został film pokazujący jak zadawana prędkość za pomocą ruchów myszki odwzorowana jest na robocie:
+
+\begin{center}
+  \includegraphics{images/vmetro}
+  \captionof{figure}{Sterowanie graficzne}
+\end{center}
+
 
 \chapter{Podsumowanie}
+W projekcie zrealizowanie zostały wszystkie przyjęte założenia dotyczące. Powstała konstrukcja mechaniczna oraz elektroniczna robota. Praca koncentrowała się na rozwoju oprogramowania, zarówno samego robota, jak i aplikacji. Opisane zostały podstawy konstrukcyjne robota oraz szczegółowy opis rozwiązań programowych ze szczególnym uwzględnieniem zastosowanych algorytmów. Proces budowy i eksploatacji robota doprowadziło następujących wniosków:
+\begin{enumerate}
+ \item Zastosowanie gotowego modelu wydaje się pewniejszym rozwiązaniem niż własnoręczna konstrukcja, mechaniczna. Jednakże, przy kupnie nowej platformy, nie wiemy jakiej jest jakości. Kupiona konstrukcja charakteryzuje się bardzo szybkim stopniem eksploatacji. Najbardziej problematyczne okazał się rozciągnięcie jednej gąsienicy, co uniemożliwiało w pełni skuteczną regulację prędkości bazując na odczytach z enkoderów. W związku identyczna prędkość obrotową nie jest równa prędkości liniowej dla każdego koła. Zabezpieczenie się przed takimi przypadłościami warto rozważyć użycie dodatkowych sensorów pozwalających na określenie orientacji robota, na przykład żyroskop, w celu korekcji niedokładności konstrukcyjnych.
+ \item Komunikacja poprzez interfejs szeregowy z wykorzystaniem modułu Bluetooth doskonale sprawdza się w zastosowaniach robotyki amatorskiej. Zasięg do ok. 10m, deterministyczność transmisji i prostota obsługi sprawia, że warto ją rozważyć jako standardowy sposób komunikacji projektu. Komunikacja bazująca na zasadzie klient-serwer nie zawiodła nawet podczas intensywnej eksploatacji robota.
+ \item Osadzenie silnika język skryptowego pozwala z możliwością komunikacji z robotem umożliwia bardzo szerokie możliwości pracy z robotem. Zasoby jakie potrzebne są do uruchomienia interpretera jakiegokolwiek języka skryptowego są przeważnie wielokrotnie większe niż te, które udostępniają średniej klasy mikrokontrolery. Zastosowane rozwiązanie wykorzystuje moc obliczeniową i pamięć komputera sterującego przesyłając wyniki operacji robotowi. Dzięki czemu, nawet na ośmiobitowym mikrokontrolerze można prototypować skomplikowane algorytmy. Z punktu widzenia programisty bardzo przydatne jest możliwość podglądania poszczególnych wartości w czasie rzeczywistych testów robota.
+ \item Stworzony  interfejs komunikacyjny świetnie sprawdza się w działaniu modułu interpretera oraz przy konfiguracji  i testowaniu robota, jednakże przy sterowaniu poprzez tryb graficzny wprowadza zauważalne opóźnienia. Warto jest rozważyć implementację protokołu komunikacyjnego dla trybu synchronicznego, czy wręcz strumieniowego. 
+\end{enumerate}
+
+Projekt charakteryzuje się niezwykle duża podatnością  na rozbudowę. Z punktu widzenia sprzętowego najważniejsze jest budowa, bądź nabycie modelu mechanicznego wysokiej jakości. Sam projekt nie zakładał odczytu informacji z otoczenia oraz wizualizacji danych. Rozbudowa układu elektronicznego o dalmierze i czujniki MEMS pozwalają poprawę układu regulacji oraz na rozszerzenie projektu o cały szereg zagadnień związanych za analizą i wizualizacją danych. Celem długofalowym jest opracowanie pełnej specyfikacji protokołu komunikacyjnego dla synchronicznej i asynchronicznej wymiany danych, specyfikacja abstrakcyjnego interfejsu funkcjonalności robota wraz z pełną właściwą implementacją. 
+
 \addcontentsline{toc}{chapter}{Bibliografia} %utworzenie w spisie treści pozycji Bibliografia
 \bibliography{bibliografia} % wstawia bibliografię korzystając z pliku bibliografia.bib - dotyczy BibTeXa, jeżeli nie korzystamy z BibTeXa należy użyć otoczenia thebibliography
 
