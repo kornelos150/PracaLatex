@@ -129,14 +129,14 @@
 %poniżej znajduje się przykładowa treść dalszej części dokumentu, zainteresowanych zachęcam do rozszyfrowania frazy "Lorem ipsum" :)
 \chapter{Wprowadzenie}
 
-Robot mobilny klasy 2,0 jest robotem posiadającym dwukołowy napęd różnicowy. Roboty mobilnę charakteryzują się ilocią sterowań napędem oraz jego kierunkiem. Skonstruoane rozwiązanie jest jednym z najpopularniejszych  w robotyce. Robot posiada możłiwoć sterowania niezależnego steroaia prędkocią obrotową każdega z koł, bez możlliwoci zmiany ich orentacji.  
+Robot mobilny klasy 2,0 jest robotem posiadającym dwukołowy napęd różnicowy. Jednym z kryteriów podziału robotów mobilnych jest ze względu na ilość niezależnych sterowań prędkością obrotową kół oraz ich orientacją. Robot wybranej klasy posiada możliwość niezależnego sterowania prędkością obrotową każdego z kół, bez możliwości  zmiany ich orientacji.  
  \section{Cel projektu}
 
-Celem projektu było zbudowanie fizycznego robota mobilnego 2.0 wraz z napisaniem oprogramowania na mikrokontroler oraz aplikacji, która umożliwia zdalne sterowanie robotem. Projekt wymagał wybrania sposobu komunikacji bezprzewodowej. Wybór padł na standard Bluetooth, co wynikał z popularności rozwiązania, dużej dostępności rozwiązań sprzętowych oraz programowych. Głównycm celem pracy było umożliwienie  jak największej interakcji z robotem zarówno w czasie rzeczywistym, jak i za pomocą komend tekstowych, z możliwością pisania skryptów. Główny nacisk położony został na rozwinięcie niezawodnego i rozszerzalnego oprogramowania zarówna na platformie mobilnej, jak i aplikacji desktopowej. 
+Celem projektu było zbudowanie fizycznego robota mobilnego 2.0 wraz z napisaniem oprogramowania na mikrokontroler oraz aplikacji, która umożliwia zdalne sterowanie robotem .Głównym celem pracy było umożliwienie  jak największej interakcji z robotem zarówno w czasie rzeczywistym, jak i za pomocą komend tekstowych z możliwością pisania skryptów. Aplikacja kliencka miała zawierać podstawową funkcjonalność edytora tekstowego z możliwością uruchamiania skryptów oraz interfejs graficzny pozwalający na wizualizację stanu robota  i sterowanie za pomocą myszki.
 
  \section{Założenie projektowe} 
 
-Projekt zakłada przygotowanie modelu mechanicznego zawierającego dwukołowy napęd różnicowy wraz z  układem elektronicznym umożliwiającym sterowanie silnikiem prądu stałego, jak również odczytem prędkości obrotu wału silnika. W układzie elektronicznym konieczny jest moduł Bluetooth umożliwiający komunikację szeregową z mikrokontrolerem. Oprogramowanie mikrokontrolera zawiera:
+Projekt zakłada przygotowanie modelu mechanicznego zawierającego dwukołowy napęd różnicowy wraz z  układem elektronicznym umożliwiającym sterowanie silnikiem prądu stałego, jak również odczytem prędkości obrotu wału silnika. Komunikacja bezprzewodowa wykonana została w technologii Bluetooth, co wynikało z popularności rozwiązania oraz dużej dostępności rozwiązań sprzętowych oraz programowych. Oprogramowanie mikrokontrolera zawiera:
 \begin{itemize}
   \item komunikację dwukierunkową interfejsu szeregowego
   \item asynchroniczną reakcję na otrzymane wiadomości z zewnątrz
@@ -145,7 +145,7 @@ Projekt zakłada przygotowanie modelu mechanicznego zawierającego dwukołowy na
   \item zabezpieczenie przed utratą transmisji
 \end{itemize}
 
-Aby możliwa była komunikacja między robotem a otoczeniem z zewnątrz wymagane jest przygotowanie protokołu komunikacyjnego dającego aplikacji interfejs na którym może operować.Zdecydowanno się na implementację komunikacji typu klient-serwer, w której platforma mobilna realizuje komendy aplikacji sterującej. Aplikacja sterująca, zgodnie z celem projektu, ma umożliwiać szeroki zakres form sterowania, opierając się na wyżej wymienionym protokole. Oprogramowanie sterujące zakłada:
+Aby możliwa była komunikacja między robotem a otoczeniem z zewnątrz, wymagane jest przygotowanie protokołu komunikacyjnego dającego aplikacji interfejs, na którym może operować. Zdecydowanno się na implementację komunikacji typu klient-serwer, w której platforma mobilna realizuje komendy aplikacji sterującej. Aplikacja sterująca, zgodnie z celem projektu, ma umożliwiać szeroki zakres form sterowania opierając się na wyżej wymienionym protokole. Oprogramowanie sterujące zakłada:
 \begin{itemize}
   \item możliwość zapisu i odczytu danych w standardzie Bluetooth poprzez wirtualny port COM
   \item możliwość sterowania robotem za pomocą komend tekstowych. Punkt ten zakłada przygotowanie modułu interpretera do wprowadzania komend/skryptów oraz wykorzystanie silnika języka JavaScript
@@ -156,7 +156,7 @@ Aby możliwa była komunikacja między robotem a otoczeniem z zewnątrz wymagane
 
  \section{Platforma mechaniczna}
 
-Platforma mechaniczna robota oparta jest o model Zumo Chassis Kit firmy Pololu. Konstrukcja zaprojektowana jest z myślą o wykorzystaniu innyh produktów spod znaku tej firmy, przed wszystkim silników prądu stałego. Z tego powodu umożliwia ona pełną i bezproblemową integrację z zastosowanym napędem. Najważniejszym elementem modelu jest obecność gąsienicowego układu bieżnego. Zwiększa to powierzchnię styku z podłożem, co polepsza przyczepność i zmniejsza prawdopodobieństwo poślizgu poprzecznego, co ma szczególne znaczenie w przypadku pomiaru prędkości odometrią. 
+Platforma mechaniczna robota oparta jest o model Zumo Chassis Kit firmy Pololu. Konstrukcja zaprojektowana jest z myślą o wykorzystaniu innych produktów spod znaku tej firmy, przed wszystkim silników prądu stałego. Z tego powodu umożliwia ona pełną i bezproblemową integrację z zastosowanym napędem. Najważniejszym elementem modelu jest obecność gąsienicowego układu bieżnego. Zwiększa to powierzchnię styku z podłożem, co polepsza przyczepność.
 
    \begin{figure}[ht]
     \centering
@@ -172,7 +172,7 @@ Platforma mechaniczna robota oparta jest o model Zumo Chassis Kit firmy Pololu. 
   	 \captionof{figure}{Silnik wraz enkoderem}
      \label{fig:silnik_enc}
     \end{subfigure}
-    \caption{Gotowy moduł nadajnika}
+    \caption{Elementy mechanicze (materiały dystrybutora)}
     \label{fig:plytka}
    \end{figure}
 
@@ -184,7 +184,7 @@ Wymiary modelu mechanicznego:
   \item średnica koła: 1.56[cm]
 \end{itemize}
 
-Napędami są miniaturowe silniki Pololu HP z dwustronną osią. Silnik posiada przekładnię 50:1 co ogranicza prędkość obrotową wału silnika, zwiększając jednocześnie jego moment. Obustronny wał pozwala na wygodny montaż enkoderów, wykorzystywanych przy pomiarze prędkości obrotowej silnika. Parametry silnika:
+Napędami są miniaturowe silniki Pololu HP z dwustronną osią. Silnik posiada przekładnię 50:1, co ogranicza prędkość obrotową wału silnika, zwiększając jednocześnie jego moment. Obustronny wał pozwala na wygodny montaż enkoderów wykorzystywanych przy pomiarze prędkości obrotowej silnika. Parametry silnika:
 
 \begin{itemize}
   \item Maksymalne napięcie pracy: 9[V]
@@ -193,7 +193,7 @@ Napędami są miniaturowe silniki Pololu HP z dwustronną osią. Silnik posiada 
   \item Maksymalny prąd dla napięcia 6[V]: 1600[mA]
 \end{itemize}
 
-Wybór silnika podyktowany był nie tylko możliwościami jakie oferuje, ale przed wszystkim pełną integracją z modelem mechanicznym oraz enkoderami (montaż zaprezentowany jest na rysunku powyżej). Użycie dedykowanych elementów przyśpieszyło konstrukcję modelu oraz i zapobiegło błędom montażowym.
+Wybór silnika podyktowany był nie tylko możliwościami jakie oferuje, ale przed wszystkim pełną integracją z modelem mechanicznym oraz enkoderami (montaż zaprezentowany jest na rysunku powyżej). Użycie dedykowanych elementów przyspieszyło konstrukcję modelu oraz zapobiegło błędom montażowym.
 
  \section{Konstrukcja elektroniczna}
 Na konstrukcje elektroniczną robota składają się 4 moduły:
@@ -205,14 +205,12 @@ Na konstrukcje elektroniczną robota składają się 4 moduły:
   \item akumulator LiPol Redox 7.4 V 500mAh
 \end{itemize}
 
-  \begin{figure}[ht]
-   \centering
-   \includegraphics[width=9cm]{images/nucleo}
-   \caption{Wizualizacja zasady wyznaczania pozycji}
-   \label{fig:nucleo}
-  \end{figure} 
+  \begin{center}
+   \includegraphics[width=1\textwidth]{images/nucleo}
+   \captionof{figure}{Układ Nucleo F401RE(materiały dystrybutora)}
+  \end{center} 
 
-Elektronika robota opera się o układ Nucleo F401RE.Sercem układu jest mikrokontroler STM32F401.Posiada on 32-bitową architekturę opartą o rdzeń ARM Cortex M-4 i może być taktowany do 84 MHz. Wydajna jednostka obliczeniowa wraz z sprzętową obsługą operacji na liczbach zmiennoprzecinkowych była kluczowa przy realizacji projektu.  Oprócz szybkiego przetwarzania danych od mikrokontrolera wymagane była sprzętowa realizacja komunikacji szeregowej oraz duża liczba timerów.  Mikrokontroler posiada kontroler DMA (ang. Direct Memory Access),pozwalający przeprowadzać transmisję danych bez obciążania procesora, jak również 10 sprzętowych timerów, co pokrywa wymagania projektowanego systemu.
+Elektronika robota opera się o układ Nucleo F401RE. Sercem układu jest mikrokontroler STM32F401. Posiada on 32-bitową architekturę opartą o rdzeń ARM Cortex M-4 i może być taktowany do 84 MHz. Wydajna jednostka obliczeniowa wraz z sprzętową obsługą operacji na liczbach zmiennoprzecinkowych była kluczowa przy realizacji projektu. Oprócz szybkiego przetwarzania danych od mikrokontrolera wymagana była sprzętowa realizacja komunikacji szeregowej oraz duża liczba timerów. STM32F401 posiada kontroler DMA (ang. Direct Memory Access), pozwalający przeprowadzać transmisję danych bez obciążania procesora, jak również 10 sprzętowych timerów, co pokrywa wymagania projektowanego systemu.
 Parametry STM32F401:
 \newline Parametry STM32F401:
 \begin{itemize}
@@ -223,7 +221,7 @@ Parametry STM32F401:
   \item Interfejsy: 3x I2C, 3x USART, 4x SPI, USB 2.0 Full Speed
 \end{itemize}
 
-Nie licząc wypowadzeńpinów mikrokontrolera, istotnymi elementami w Nucleo F401RE są stabilizatorynapięcia na 3.3V i 5V z możliwością zasilania bateryjnego od 9V do 12V oraz programator/debuger ST-Link v2 . 
+Poza wypowadzeniami pinów mikrokontrolera, istotnymi elementami w Nucleo F401RE są stabilizatory napięcia na 3.3V i 5V z możliwością zasilania bateryjnego od 9V do 12V oraz programator/debuger ST-Link v2 . 
 \\Komunikację bezprzewodową w standardzie Bluetooth umożliwia moduł HC-05. Techniczne szczegóły opisane są w rozdziale 3.3. Najważniejsze parametry HC-05:
 \begin{itemize}
   \item Napięcie zasilania: 3.3[V]
@@ -232,54 +230,46 @@ Nie licząc wypowadzeńpinów mikrokontrolera, istotnymi elementami w Nucleo F40
   \item Standard: Bluetooth 2.0 + EDR
 \end{itemize}
 
-Odczyt prędkości realizowany jest przez enkodery magnetyczneMagnetic Encoder Pair Kit for Micro Metal Gearmotors formy Pololu. Wybór wynikał z wyżej wspomnianej integracji z elementami mechanicznymi robota. Podstawą fizyczną działania magnetycznych enkoderów inkrementacyjnych jest efekt Halla.
+Odczyt prędkości realizowany jest przez enkodery magnetyczne Magnetic Encoder Pair Kit for Micro Metal Gearmotors firmy Pololu. Wybór wynikał z wyżej wspomnianej integracji z elementami mechanicznymi robota. Podstawą fizyczną działania magnetycznych enkoderów inkrementacyjnych jest efekt Halla.
 
    \subsection{Bazowy obwód}
    \begin{figure}[ht]
     \centering
-    \includegraphics[width=12cm]{images/schemat_elekt}
+    \includegraphics[width=1\textwidth]{images/schemat_elekt}
     \caption{Schemat układu elektronicznego}
     \label{fig:schemat_elekt}
    \end{figure}
 
-Układ elektroniczny zaprojektowany został w programie CircuitMaker firmy Altium. Układ łączy wyprowadzenia Nucleo z enkodermi i silnikami (poprzez sterownik). Powszechnym sposobem kontroli silnika prądu stałego jest zastosowanie mostka H. Układ ten pozwala na sterowanie kierunkiem przepływu prądu przez silnik. Funkcja realizowana jest przez układ scalony TB6612FNG, który pozwala na kontrole kierunku obrotów dwóch silników oraz regulacje ich prędkości sygnałem PWM (ang. Pulse Width Modulation). Sygnał zasilający silniki oraz wyprowadzenia enkoderów połączone z układem jest za pośrednictwem złącza micromatch.
+Układ elektroniczny zaprojektowany został w programie CircuitMaker firmy Altium. Łączy on wyprowadzenia Nucleo z enkodermi i silnikami (poprzez sterownik). Powszechnym sposobem kontroli silnika prądu stałego jest zastosowanie mostka H. Układ ten pozwala na sterowanie kierunkiem przepływu prądu przez silnik. Funkcja realizowana jest przez układ scalony TB6612FNG, który pozwala na kontrole kierunku obrotów dwóch silników oraz regulację ich prędkości sygnałem PWM (ang. Pulse Width Modulation). Zasilanie silników oraz wyprowadzenia enkoderów połączone są z układem za pośrednictwem złącz micromatch.
 \chapter{Oprogramowanie robota mobilnego}
  \section{Struktura oprogramowania}
-   \begin{figure}[ht]
-    \centering
+   \begin{center}
     \includegraphics[width=1\textwidth]{images/ogol}
-    \caption{Schemat blokowy głównego algorytmu robota}
-    \label{fig:ogol}
-   \end{figure}
+    \captionof{figure}{Schemat blokowy głównego algorytmu robota}
+   \end{center}
 
-Oprogramowanie napisane jest w języku C w wykorzystaniem bibliotek HAL (Hardware Abstraction Layer) udostępnionych przez firmę STMicroelectronics. Powyższy schemat ilustruje działanie podstawowej funkcjonalności robota, czyli regulację prędkości. 
-Centralny blok odzwierciedla aktualny stan robota, zrealizowany z pomocą zmiennych globalnych. Strałki oznaczają kierunek przepływu danych pomędzy poszczególnymi komponentami. Grube strzałki repezentują zdarzenie wywzalające działanie danego komponentu. Linią przerywaną wyróżniona zostałą niestandardowa operacja, która bez uprzedniej zmiany konfiguracji robota, nie jest możliwa podczas procesu regulacji(więcej na tan temat znajduję sie w rodziale piątym). Poszczególne bloki zostały szczegółowe opisane w dalszej częsci tego rozdziału.
+Oprogramowanie napisane jest w języku C w wykorzystaniem bibliotek HAL (Hardware Abstraction Layer) udostępnionych przez firmę STMicroelectronics. Powyższy schemat ilustruje działanie podstawowej funkcjonalności robota czyli regulację prędkości. 
+Centralny blok odzwierciedla aktualny stan robota, zrealizowany z pomocą zmiennych globalnych. Strzałki  oznaczają kierunek przepływu danych pomiędzy poszczególnymi komponentami. Grube strzałki reprezentują zdarzenie wyzwalające działanie danego komponentu. Linią przerywaną wyróżniona została niestandardowa operacja, która bez uprzedniej zmiany konfiguracji robota nie jest możliwa podczas procesu regulacji(więcej na tan temat znajduję sie w dodatku A). Poszczególne bloki zostały szczegółowe opisane w dalszej części tego rozdziału.
  \section{Konfiguracja mikrokontrolera}
 
 Konfiguracja mikrokontrolera wykonana jest przy użyciu oprogramowania STMCubeMX. Pozwala one w bezpieczny i wygodny sposób dokonać konfiguracji.
 
-   \begin{figure}[ht]
-    \centering
+   \begin{center}
     \includegraphics[width=1\textwidth]{images/cubemx1}
-    \caption{Konfiguracja pinów mikrokontrolera}
-    \label{fig:cubemx1}
-   \end{figure}
+    \captionof{figure}{Konfiguracja pinów mikrokontrolera}
+   \end{center}
 
-   \begin{figure}[ht]
-    \centering
+   \begin{center}
     \includegraphics[width=1\textwidth]{images/clock}
-    \caption{Konfiguaracja taktowania}
-    \label{fig:clock}
-   \end{figure}
+    \captionof{figure}{Konfiguaracja taktowania}
+   \end{center}
 
 Mikrokontroler jest taktowany z częstotliwością 84 MHz. Źródłem taktowania jest rezonator kwarcowy 8 MHz, którego częstotliwość jest powielana  przez wewnętrzną pętlę PLL. 
 
-   \begin{figure}[ht]
-    \centering
+   \begin{center}
     \includegraphics[width=1\textwidth]{images/uC_config}
-    \caption{Wykorzystane komponenty STM32F401}
-    \label{fig:uC_config}
-   \end{figure}
+    \captionof{figure}{Wykorzystane komponenty STM32F401}
+   \end{center}
 
 Oprogramowanie wykorzystuje 7 sprzętowych timerów, obsługę transmisji szeregowej UART, magistrale DMA oraz kontroler przerwań NVIC. Oprogramowanie nie zawiera żadnej instrukcji w pętli głównej programu, zachowanie robota jest całkowicie sterowane sprzętowymi przerwaniami. 
 
@@ -293,7 +283,7 @@ Komunikacja Bluetooth wykorzystuje obsługę dwóch komponentów mikrokontrolera
   \item bit parzystości (kontrola błędów odbiory danych )
 \end{itemize}
 Wykorzystana została standardowa konfiguracja prędkości: 9600, 8-bitowe słowo, jeden bit stopu, brak bitów parzystości.
-\\DMA jest modułem który umożliwia bezpośredni dostęp do pamięci RAM i układów peryferyjnych. Układ DMA umożliwia transfer danych pomiędzy urządzeniem peryferyjnym a pamięcią RAM bez angażowania procesora, którego zadanie ogranicza się do konfiguracji urządzenia. Komponent został użyty do przesyłu i odbioru danych pomiędzy układem UART i dziesięciobajtowym obszarem pamięci RAM. Włączenie odbioru danych szeregowych z użyciem DMA:
+\\DMA jest modułem, który umożliwia bezpośredni dostęp do pamięci RAM i układów peryferyjnych. Układ DMA umożliwia transfer danych pomiędzy urządzeniem peryferyjnym a pamięcią RAM bez angażowania procesora, którego zadanie ogranicza się do konfiguracji urządzenia. Komponent został użyty do przesyłu i odbioru danych pomiędzy układem UART i dziesięciobajtowym obszarem pamięci RAM. Włączenie odbioru danych szeregowych z użyciem DMA:
 \begin{lstlisting}[style=c]
 int8_t command[10];
 HAL_UART_Receive_DMA(&huart2, command, sizeof(command));
@@ -316,132 +306,93 @@ voidHAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		startBluetoothTimer();
 }
 \end{lstlisting}
-Funkcja jest uniwersalnym handlerem każdego przerwania generowanego przez interfejs szeregowy. Obiekt UART komponentu który wywołał przerwanie jest przekazywany jako argument funkcji. Z uwagi na to, że używany jest jeden interfejs szeregowy nie ma potrzeby sprawdzania czy to on jest źródłem przerwania. Funkcja tworzy tablicę bajtów - response, która wraz z kopią odebranej komendy przekazywana jest do funkcji obsługującej daną wiadomość. Obsługa wiadomości oraz zastosowany timer opisany jest w dalszej części tego rozdziału.
-\\Asynchroniczny sposób komunikacji z robotem może prowadzić do sytuacji, podczas której odebana zostanie wiadomość, zanim poprzednia zostanie obsłużona. Dodatkową komplikacją, w tej sytuacji jest użycie DMA, które wypełnia wartości w pamięci z pominięciem pracy, a tym samym kontroli procesora. Praca, na tym samym obszarze pamięci, które wypełnia DMA, podczas obsługi, mogłaby skutkować zmianą wartości tablicy podczas odczytu danych. Z tego powodu, pierwszym etapem w obsłudze przerwania, jest utworzenie kopii tablicy commandi praca na duplikacie. To rozwiązanie, zwiększa stabilność przetwarzania wiadomości, ale nie rozwiązuje problemu całkowicie. Nowa wiadomość mogłaby pojawić się podczas tworzenia duplikatu, co znów generuje ten sam problem. Z pomocą przychodzi tutaj sprzętowa obsługa przerwań w mikrokontrolerach STM. Przetworzenie wiadomości wywoływana jest w obsłudze przerwania, które kończy się dopiero, po zaaplikowaniu komendy. Kontroler przerwań NVIC, w przypadku takiego samego priorytetu, tworzy kolejkę LIFO przerwań, a następnie kolejno przekazuje sterowanie, po zakończeniu aktualnie wywołanej funkcji obsługi. Z tego powodu handler nie wywoła się przed zakończeniem przetwarzania bieżącej komendy. Poza wyżej wymienionymi zabezpieczeniami omawiany błąd eliminowany jest przez konstrukcję protokołu komunikacyjnego z aplikacją sterującą. Zgodnie z nim, aplikacja nie wysyła następnej wiadomości bez otrzymania odpowiedzi na poprzednią, w przypadku prawidłowej wymiany danych, rozwiązuje ten problem.
+Funkcja jest uniwersalnym handlerem, każdego przerwania generowanego przez interfejs szeregowy. Obiekt UART komponentu, który wywołał przerwanie jest przekazywany jako argument funkcji. Z uwagi na to, że używany jest jeden interfejs szeregowy, nie ma potrzeby sprawdzania czy to on jest źródłem przerwania. Funkcja tworzy tablicę bajtów - response, która wraz z kopią odebranej komendy przekazywana jest do funkcji obsługującej daną wiadomość. Obsługa wiadomości oraz zastosowany timer opisany jest w dalszej części tego rozdziału.
+\\Asynchroniczny sposób komunikacji z robotem może prowadzić do sytuacji, podczas której odebrana zostanie wiadomość, zanim poprzednia zostanie obsłużona. Dodatkową komplikacją w tej sytuacji jest użycie DMA, które wypełnia wartości w pamięci z pominięciem pracy, a tym samym kontroli procesora. Praca, na tym samym obszarze pamięci, które wypełnia DMA podczas obsługi, mogłaby skutkować zmianą wartości tablicy podczas odczytu danych. Z tego powodu pierwszym etapem w obsłudze przerwania jest utworzenie kopii tablicy command i praca na duplikacie. To rozwiązanie zwiększa stabilność przetwarzania wiadomości, ale nie rozwiązuje problemu całkowicie. Nowa wiadomość mogłaby pojawić się podczas tworzenia duplikatu, co znów generuje ten sam problem. Z pomocą przychodzi tutaj sprzętowa obsługa przerwań w mikrokontrolerach STM. Przetworzenie wiadomości wywoływana jest w obsłudze przerwania, które kończy się dopiero po zaaplikowaniu komendy. Kontroler przerwań NVIC w przypadku takiego samego priorytetu tworzy kolejkę LIFO przerwań, a następnie kolejno przekazuje sterowanie po zakończeniu aktualnie wywołanej funkcji obsługi. Z tego powodu handler nie wywoła się przed zakończeniem przetwarzania bieżącej komendy. Poza wyżej wymienionymi zabezpieczeniami, omawiany błąd eliminowany jest przez konstrukcję protokołu komunikacyjnego z aplikacją sterującą. Zgodnie z nim aplikacja nie wysyła następnej wiadomości bez otrzymania odpowiedzi na poprzednią, w przypadku prawidłowej wymiany danych rozwiązuje ten problem.
 
- \section{Proces przetwarzania wiadomosci}
-W poprzednim rozdziale zaprezentowana jest obsługa przerwania od zakończenia transmisji szeregowej. Obecna jest funkcja „commandHandler” odpowiedzialna za obsługę wiadomości i uformowanie odpowiedzi. Struktura  funkcji „commandHandler” ( dla czytelności fragment funkcji, został pominęty):
+ \section{Proces przetwarzania wiadomości}
+W poprzednim rozdziale zaprezentowana jest obsługa przerwania od zakończenia transmisji szeregowej. Obecna jest funkcja „commandHandler” odpowiedzialna za obsługę wiadomości i uformowanie odpowiedzi. Struktura  funkcji „commandHandler” ( dla czytelności fragment funkcji, został pominięty):
 \begin{lstlisting}[style=c]
 
 int8_t* commandHandler(int8_t* command,int8_t* response)
 {
-if(command[0] != 'B' || command[4] != 'M' || command[9] !='E')
-return invalidMessage(response);
-if(command[1] == 1)
-{
-//set speed
-returnsetVelocityResponse(command,response);
+	if(command[0] != 'B' || command[4] != 'M' || command[9] !='E')
+		return invalidMessage(response);
+	if(command[1] == 1)
+	{
+		//set speed
+		returnsetVelocityResponse(command,response);
+	}
+	if(command[1] == 2)
+	{
+		//get speed
+		returngetVelocityResponse(command,response);
+	}
+	//(...)
+	if(command[1] == 14)
+	{
+		//set direction pins
+		returnsetMotorsDirection(command,response);
+	}
+	if(command[1] == 15)
+	{
+		//get direction pins
+		returngetMotorsDirection(command,response);
+	}
+	returninvalidMessage(response);
 }
-if(command[1] == 2)
-{
-//get speed
-returngetVelocityResponse(command,response);
-}
-//(...)
-if(command[1] == 14)
-{
-//set direction pins
-returnsetMotorsDirection(command,response);
-}
-if(command[1] == 15)
-{
-//get direction pins
-returngetMotorsDirection(command,response);
-}
-returninvalidMessage(response);
-}
+
 \end{lstlisting}
 
-Działanie prezentowanej funkcji jest ściśle związane z protokołem komunikacyjnym pomiędzy robotem a aplikacją sterującą. Zagadnienie to jest szczegółowo opisane w rozdziale piątym. Początek funkcji sprawdza czy na odpowiednich pozycjach występują wartości stałe i charakterystyczne dla każdej wiadomości, w przeciwnym wypadku wysyłana jest wiadomość informująca o błędzie. Następnie na podstawie identyfikatora wiadomości wywoływana jest konkretna funkcja obsługująca daną wiadomość, a jeżeli podany identyfikator nie jest znany zwracany jest błąd. 
+Działanie prezentowanej funkcji jest ściśle związane z protokołem komunikacyjnym pomiędzy robotem a aplikacją sterującą. Zagadnienie to jest szczegółowo opisane w dodatku A. Początek funkcji sprawdza, czy na odpowiednich pozycjach występują wartości stałe i charakterystyczne dla każdej wiadomości, w przeciwnym wypadku wysyłana jest wiadomość informująca o błędzie. Na podstawie identyfikatora wiadomości wywoływana jest odpowiednia funkcja obsługi.  
 \\Obsługa wiadomości zaprezentowana na przykładzie komendy zadającej prędkość w układzie regulacji:
+
 \begin{lstlisting}[style=c]
 
 int8_t* setVelocityResponse(int8_t* command,int8_t* response)
 {
-uint8_tindex = 0;
-for(;index<10; ++index)
-response[index] = 0;
-response[0] = 'B';
-response[1] = command[1];
-response[2] = command[2];
-response[3] = command[3];
-response[4] = command[5];
-response[5] = command[6];
-if(command[2] == 0 && command[3] == 0 && command[5] == 0 && command[6] == 0)
-{
-stopMotors();
-return response;
+	uint8_tindex = 0;
+	for(;index<10; ++index)
+	response[index] = 0;
+	response[0] = 'B';
+	response[1] = command[1];
+	response[2] = command[2];
+	response[3] = command[3];
+	response[4] = command[5];
+	response[5] = command[6];
+	if(command[2] == 0&& command[3] == 0&& command[5] == 0&& command[6] == 0)
+	{
+		stopMotors();
+		return response;
+	}
+	int8_t data[2];
+
+	data[0] = command[2];
+	data[1] = command[3];
+	setLeftSpeed = byte2Float(data);
+
+	data[0] = command[5];
+	data[1] = command[6];
+	setRightSpeed = byte2Float(data);
+
+	if(command[7] != 0&& command[8] != 0)
+	{
+		data[0] = command[7];
+		data[1] = command[8];
+		uint32_t timer = byte2int(data);
+
+		startSpeedTimer(timer);
+	}
+
+	return response;
 }
-int8_t data[2];
-
-data[0] = command[2];
-data[1] = command[3];
-setLeftSpeed = byte2Float(data);
-
-data[0] = command[5];
-data[1] = command[6];
-setRightSpeed = byte2Float(data);
-
-if(command[7] != 0&& command[8] != 0)
-{
-data[0] = command[7];
-data[1] = command[8];
-uint32_t timer = byte2int(data);
-
-startSpeedTimer(timer);
-}
-
-return response;
-\end{lstlisting}
-
-Działanie prezentowanej funkcji jest ściśle związane z protokołem komunikacyjnym pomiędzy robotem a aplikacją sterującą. Zagadnienie to jest szczegółowo opisane w rozdziale piątym. Początek funkcji sprawdza czy na odpowiednich pozycjach występują wartości stałe i charakterystyczne dla każdej wiadomości, w przeciwnym wypadku wysyłana jest wiadomość informująca o błędzie. Następnie na podstawie identyfikatora wiadomości wywoływana jest konkretna funkcja obsługująca daną wiadomość, a jeżeli podany identyfikator nie jest znany zwracany jest błąd. 
-\\Obsługa wiadomości zaprezentowana będzie na przykładzie komendy ustalające prędkość zadaną  w układzie regulacji:
-\begin{lstlisting}[style=c]
-
-int8_t* setVelocityResponse(int8_t* command,int8_t* response)
-{
-uint8_tindex = 0;
-for(;index<10; ++index)
-response[index] = 0;
-response[0] = 'B';
-response[1] = command[1];
-response[2] = command[2];
-response[3] = command[3];
-response[4] = command[5];
-response[5] = command[6];
-if(command[2] == 0&& command[3] == 0&& command[5] == 0&& command[6] == 0)
-{
-stopMotors();
-return response;
-}
-int8_t data[2];
-
-data[0] = command[2];
-data[1] = command[3];
-setLeftSpeed = byte2Float(data);
-
-data[0] = command[5];
-data[1] = command[6];
-setRightSpeed = byte2Float(data);
-
-if(command[7] != 0&& command[8] != 0)
-{
-data[0] = command[7];
-data[1] = command[8];
-uint32_t timer = byte2int(data);
-
-startSpeedTimer(timer);
-}
-
-return response;
 \end{lstlisting}
 
 
-Każda funkcja początkowo wypełnia odpowiedź zerami i wartościami stałymi. Dla wiadomości typu „ustaw” odpowiedź powinna być identyczna jak komenda przychodząca. Dzięki temu aplikacja sterująca może mieć pewność, że ustawione zostały podane wartości. Pobór fatycznych wartości ustawionych na robocie odbywa się za pomocą wiadomości typu „pobierz”.  Zaprezentowana wiadomość ustawia 3 pozycje: prędkość lewego koła, prędkość prawego koła (w cm/s ) oraz opcjonalnie czas trwania zadanego ruchu. Wiadomości ustawiające prędkość charakteryzują się jeszcze jedną właściwością. Mając wszystkie pola wartości  wypełnione zerami wywołuje się funkcja zatrzymania silników robota. Jest to jedna z form zabezpieczenia. Warunek ten jest sprawdzany od razu po uformowaniu odpowiedzi. Kolejnym etapem jest konwersja odpowiednich bajtów na liczbę zmiennoprzecinkową i zapis wartości do globalnej zmiennej określającej zadaną prędkość dla danego koła. Ostatnim etapem obsługi wiadomości jest ustawienie czasu trwania długości danego ruchu. Jeżeli pola nie są wypełnione zerami wystartuje timer z przesłanymi danymi ilościami milisekund i po tym czasie zostaną zatrzymane silniki. W przeciwnym razie zadana prędkość będzie się utrzymywała aż do jej zmiany. Po zakończeniu procedury zwracany jest adres z odpowiedzią.
+Każda funkcja początkowo wypełnia odpowiedź zerami i wartościami stałymi. Dla wiadomości typu „ustaw” odpowiedź powinna być identyczna jak komenda przychodząca. Dzięki temu aplikacja sterująca może mieć pewność, że ustawione zostały podane wartości. Pobór fatycznych wartości ustawionych na robocie odbywa się za pomocą wiadomości typu „pobierz”.  Zaprezentowana wiadomość ustawia 3 pozycje: prędkość lewego koła, prędkość prawego koła (w cm/s ) oraz (opcjonalnie) czas trwania zadanego ruchu. Wiadomości ustawiające prędkość charakteryzują się jeszcze jedną właściwością. Mając wszystkie pola wartości  wypełnione zerami, wywołuje się funkcja zatrzymania silników robota. Jest to jedna z form zabezpieczenia. Warunek ten jest sprawdzany od razu po uformowaniu odpowiedzi. Kolejnym etapem jest konwersja odpowiednich bajtów na liczbę zmiennoprzecinkową i zapis wartości do globalnej zmiennej określającej zadaną prędkość dla danego koła. Ostatnim etapem obsługi wiadomości jest ustawienie czasu trwania długości danego ruchu. Jeżeli pola nie są wypełnione zerami wystartuje timer z przesłanymi danymi ilościami milisekund i po tym czasie zostaną zatrzymane silniki. W przeciwnym razie zadana prędkość będzie się utrzymywała aż do jej zmiany.
 
  \section{Zabezpieczenia robota}
 
-Podstawową funkcją wykorzystywaną we każdej formie zabezpieczeń robota jest stopMotors:
+Podstawową funkcją wykorzystywaną we każdej formie zabezpieczeń robota jest funkcja stopMotors:
 \begin{lstlisting}[style=c]
 voidstopMotors(void)
 {
@@ -457,7 +408,7 @@ Funkcja wyzerowuje wartość zadaną oraz ustawiony PWM, jak również zatrzymuj
 
  \section{Realizacja odczytu prędkości}
 
-Aby możliwa była regulacja prędkości wymagane jest sprzężenie zwrotne od faktycznej prędkości osiągniętej przez robota. W tym celu kluczowe jest niezawodne przetwarzanie informacji uzyskanych za pomocą enkoderów. Enkodery zamontowane na wale silników podłączone są to pinów skonfigurowanych jako wejścia kanałów timerów obsługujących ten czujniki. Mikrokontroler STM umożliwia skonfigurowanie timera do trybu Encoder Mode, który wiąże wejście sygnału taktującego licznika z impulsem generowanym przez enkoder. Tryb ten również pozwala na sprzętową analizę kolejności generowanych impulsów wyjściowych, co w wygody sposób pozwala na detekcje kierunku obrotu koła.  (…). Do obliczania prędkości użyty został jeszcze jeden niezależny timer, który o ustawiony interwał aktualizuje globalne zmienne zawierające aktualne prędkości kół robota. 
+Układ regulacji wymaga sprzężenia zwrotnego od faktycznej prędkości robota. W tym celu kluczowe jest niezawodne przetwarzanie informacji uzyskanych za pomocą enkoderów. Enkodery zamontowane na wale silników podłączone są to pinów skonfigurowanych jako wejścia timerów obsługujących ten czujniki. Mikrokontroler STM umożliwia skonfigurowanie timera do trybu Encoder Mode, który wiąże wejście sygnału taktującego licznika z impulsem generowanym przez enkoder. Tryb ten również pozwala na sprzętową analizę kolejności generowanych impulsów wyjściowych, co w wygody sposób pozwala na detekcje kierunku obrotu koła. Do obliczania prędkości użyty został jeszcze jeden niezależny timer, który cyklicznie uruchamia funkcję obliczania prędkości.
 \begin{lstlisting}[style=c]
 voidHAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
@@ -480,17 +431,17 @@ voidHAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 }
 
 \end{lstlisting}
-Jest to uniwersalny handler dla wszystkich timerów zarejestrowanych na przerwanie od końca odliczania. Biblioteka HAL obsługuje niskopoziomowo przerwanie timera i wywołuje funkcje obsługi przekazują w argumencie adres obiektu kontrolującego dany licznik. Timer (htim2) odpowiedzialny  za aktualizację prędkości jest obsługiwany na początku zapisuje wyniki funkcji obliczających prędkość oraz zapisuje je zmiennych globalnych. Interwał czasowy dla licznika może być ustalony przez wiadomość kontrolną. Obliczona wartość  jest więc średnią prędkością w ustawionej ramie czasowej.  Z powodu, że interwał aktualizacji prędkości może być ustalany dowolną  szesnastobitową wartością oraz maksymalna prędkość jaką mogą uzyskać koła nie jest stała (zależy od zużycia silników, poziomu naładowania baterii, użytej przekładni i innych czynników ) wymagane było zabezpieczenie przed przekroczeniem maksymalnej wartości timera zanim nastąpi aktualizacja prędkości. Obsługę tej sytuacji zapewnia funkcja:
+Jest to uniwersalny handler dla wszystkich timerów zarejestrowanych na przerwanie od końca odliczania. Biblioteka HAL obsługuje niskopoziomowo przerwanie timera i wywołuje funkcje obsługi przekazując w argumencie adres obiektu kontrolującego dany licznik. Interwał czasowy dla licznika może być ustalony przez wiadomość kontrolną. Obliczona wartość  jest więc średnią prędkością w ustawionej ramce czasowej.  Z powodu, że interwał timera może być ustalany przez użytkownika oraz maksymalna prędkość, jaką mogą uzyskać koła nie jest stała (zależy od zużycia silników, poziomu naładowania baterii, użytej przekładni i innych czynników ), wymagane było zabezpieczenie przed przekroczeniem maksymalnej wartości timera, zanim nastąpi aktualizacja. Obsługę tej sytuacji zapewnia funkcja:
 \begin{lstlisting}[style=c]
 void onEncoderOverload(TIM_HandleTypeDef *htim,int32_t *totalTickCounter)
 {
-if(htim->Instance->CNT >64000&& htim->Instance->CNT <65000)
-	*totalTickCounter += (ENCODER_INITIAL + 65000 - htim->Instance->CNT);
-else if (htim->Instance->CNT >0&& htim->Instance->CNT <1000)
-	*totalTickCounter -= (ENCODER_INITIAL + htim->Instance->CNT);
+	if(htim->Instance->CNT >64000 && htim->Instance->CNT <65000)
+		*totalTickCounter += (ENCODER_INITIAL + 65000 - htim->Instance->CNT);
+	else if (htim->Instance->CNT >0&& htim->Instance->CNT <1000)
+		*totalTickCounter -= (ENCODER_INITIAL + htim->Instance->CNT);
 
-htim->Instance->CNT = ENCODER_INITIAL;
-HAL_TIM_Base_Start_IT(htim);
+	htim->Instance->CNT = ENCODER_INITIAL;
+	HAL_TIM_Base_Start_IT(htim);
 }
 
 \end{lstlisting}
@@ -499,13 +450,13 @@ Argumentami jest adres danego timera oraz adres zmiennej pomocniczej określają
 \begin{lstlisting}[style=c]
 floatLeftVelocity(void)
 {
-leftTotalTicks += (ENCODER_INITIAL -htim3.Instance->CNT);
-htim3.Instance->CNT = ENCODER_INITIAL;
+	leftTotalTicks += (ENCODER_INITIAL -htim3.Instance->CNT);
+	htim3.Instance->CNT = ENCODER_INITIAL;
 
-float vel = 0.0f;
-vel = calcVelocity(leftTotalTicks);
-leftTotalTicks = 0;
-return vel;
+	float vel = 0.0f;
+	vel = calcVelocity(leftTotalTicks);
+	leftTotalTicks = 0;
+	return vel;
 }
 
 \end{lstlisting}
@@ -514,20 +465,23 @@ Funkcja dodaje do zmiennej „leftTotalTicks” ilość impulsów wygenerowanych
 \begin{lstlisting}[style=c]
 floatcalcVelocity(int8_t encoderTicks)
 {
-float tmp = encoderTicks/TICK_PER_ROUND;
-tmp = tmp*2.0*SHORT_PI;
-tmp = tmp /(getTimerTimeout(&htim2)*0.0001);
-tmp = tmp*RADIUS;
-return tmp;
+	float tmp = encoderTicks/TICK_PER_ROUND;
+	tmp = tmp*2.0*SHORT_PI;
+	tmp = tmp /(getTimerTimeout(&htim2)*0.0001);
+	tmp = tmp*RADIUS;
+	return tmp;
 }
 
 \end{lstlisting}
 
-W pierwszym kroku obliczana jest ilość obrotów jakie wykonało koło biorąc po uwagę przekładnie silnika i rozdzielczość samego czujnika . Następnym krokiem jest zamiana ilości obrotów na prędkość kątową wyrażoną w radianach na sekundę. Ostatnim etapem jest uzyskanie prędkości liniowej mnożąc prędkość kątową przez promień koła i zwrócenie wartości.
+W pierwszym kroku obliczana jest ilość obrotów jakie wykonało koło biorąc po uwagę przekładnie silnika i rozdzielczość samego czujnika . Następnym krokiem jest zamiana ilości obrotów na prędkość kątową wyrażoną w radianach na sekundę. Ostatnim etapem jest uzyskanie prędkości liniowej zgodnie ze wzorem:
+\begin{equation}\label{eq:aproksymacja}
+   v = \omega R
+  \end{equation}
 
-Przedstawione rozwiązanie jest odporne na duże prędkości,  niemniej jednak może się nie sprawdzać w przypadku małych. Korzystając z enkoderów inkrementalnych należy być świadomym niepewności pomiarowych w odczycie ilości impulsów w stałej ramie czasowej, wywołanej brakiem synchronizacji generowanego przez czujniki sygnału i timera wyzwalającego aktualizację. Problem pogłębia fakt, że sama rama czasowa może być ustalona z zewnątrz podczas pracy robota. Bezpieczniejsze byłoby zablokowanie możliwości zmiany ustawień timera, jednakże byłoby to sprzeczne z ideą projektu. Dobrana empirycznie wartość 60 [ms] jest wartością nominalną i zalecaną podczas korzystania z robota, a za zamianę tej wartości przejmuję pełną odpowiedzialność użytkownik. 
+Przedstawione rozwiązanie jest odporne na duże prędkości,  niemniej jednak może się nie sprawdzać w przypadku małych. Korzystając z enkoderów inkrementalnych należy być świadomym niestabilności podczas okresowego zliczania impulsów, wywołanej brakiem synchronizacji generowanego przez czujniki sygnału i timera wyzwalającego aktualizację. Problem pogłębia fakt, że sama ramka czasowa może być ustalona z zewnątrz podczas pracy robota. Bezpieczniejsze byłoby zablokowanie możliwości zmiany ustawień timera, jednakże byłoby to sprzeczne z ideą projektu. Dobrana empirycznie wartość 60 [ms] jest wartością nominalną i zalecaną podczas korzystania z robota, a za zamianę tej wartości przejmuję pełną odpowiedzialność użytkownik. 
 
-W stałym interwale czasowym problem pojawia wariancja odczytu impulsów, która rośnie wraz ze zmniejszaniem prędkości. Dla stosunkowo dużych prędkości wariancja odczytanych impulsów jest na tyle niewielka, że można ją pominąć, natomiast przy niewielkich potrafi mocno zaburzyć pomiar. W celu wyznaczenia progu prędkości, dla którego pomiar jest stabilny, przygotowany został eksperyment, którego wynika przedstawiono poniżej. Doświadczenie polegało na 30 krotnym pomiarze prędkości oraz ilości impulsów w ramie czasowej dla ustalonego PWM, który następnie inkrementowany był do nowej wartości. W ten sposób wyeliminowano problem błędów wywołanych samym procesem regulacji. 
+W stałym interwale czasowym problem pojawia wariancja odczytu impulsów, która rośnie wraz ze zmniejszaniem prędkości. Dla stosunkowo dużych prędkości wariancja odczytanych impulsów jest na tyle niewielka, że można ją pominąć, natomiast przy niewielkich potrafi mocno zaburzyć pomiar. W celu wyznaczenia progu prędkości, dla którego pomiar jest stabilny, przygotowany został eksperyment, którego wyniki przedstawiono poniżej. Doświadczenie polegało na 30 krotnym pomiarze prędkości oraz ilości impulsów w ramce czasowej dla ustalonego PWM, który następnie inkrementowany był do nowej wartości. W ten sposób wyeliminowano problem błędów wywołanych samym procesem regulacji. 
 
 Pomiar odbył się przy pełnym naładowaniu baterii ( 8.2[V]). Całe doświadczenie było w pełni zautomatyzowane poprzez skrypt JavaScript. W tabeli przedstawione są kolejno: wypełnienie PWM, średnia zliczonych impulsów w ramce  60 ms, ich odchylenie standardowe, procent odcylenia w stosunku do średniej oraz uśredniona prędkość.
 
@@ -557,22 +511,19 @@ Pomiar odbył się przy pełnym naładowaniu baterii ( 8.2[V]). Całe doświadcz
 \caption{Wyniki doświadczenia} 
 \end{table}
 
-Na podstawie widzimy, że odczyt przy prędkości 0,7 cm/s odczyt jest w bardzo dużym stopniu niestabilny o czym świadczą trzynastoprocentowe wahanie w zliczaniu impulsów. Kolejne odczyty odchylenie od średniej, jednakże błąd na poziome 2.5% wciąż może wprowadzić spore oscylacje przy regulacji prędkości. Błąd poniżej 1% uznany został za miarodajny i na podstawie wyników eksperymentu stwierdzona, że pomiar prędkość powyżej 10 cm/s jest stabilny.
-
+Na podstawie uzskanych danych widzimy, że odczyt przy prędkości 0,7 cm/s jest w bardzo dużym stopniu niestabilny o czym świadczą trzynastoprocentowe wahanie w zliczaniu impulsów. Na podtawie eksperymentu pomiar prędkości powyżej 9 cm/s obarczyny jest błędem poniżej jednego procenta i regulacja do tej prędkości jest stabilna.
  \section{Układ regulacji}
-   \begin{figure}[ht]
-    \centering
+   \begin{center}
     \includegraphics[width=1\textwidth]{images/regulacja}
-    \caption{Schemat układu regulacji}
-    \label{fig:regulacja}
-   \end{figure}
+    \captionof{figure}{Schemat układu regulacji}
+   \end{center}
 
-Bloki o podwójnym obramowaniu oznaczają stan robota, natomiast o pojedynczym reprezentują operację. Strzałki pokazują przepływ danych podczas regulacji prędkości.Uchyb regulacji jest różnicą pomiędzy prędkością zadaną, a aktualną, uzyskaną w trakcie procedury opisanej w poprzedniej sekcji. Wartość uchybu podlega wzmocnieniu i całkowaniu z ustawionymi nastawami, a następnie podlega sumowani ze stanem poprzednim. Operacja ta jest wymagana,  ponieważ sterowniki silników kontrolowane są przez sygnał PWM, nie jest w stanie utrzymać stałej wartości sterującej. To działanie mogłoby być realizowana przez całkujący człon regulatora, jednakże wykorzystane rozwiązanie upraszcza implementacje i dobrze wpasowuje się w dyskretną naturę regulatora.
-W implementacji członuróżniczkującego na mikrokontrolerze występuje problem przy dyskretyzacji sygnału. Poniższy wzór aproksymuje operacje różniczkowania na dziedzinie dyskretnej:
+Bloki o podwójnym obramowaniu oznaczają stan robota, natomiast o pojedynczym reprezentują operację. Strzałki pokazują przepływ danych podczas regulacji prędkości. Uchyb regulacji jest różnicą pomiędzy prędkością zadaną, a aktualną, uzyskaną w trakcie procedury opisanej w poprzedniej sekcji. Wartość uchybu podlega wzmocnieniu i całkowaniu z ustawionymi nastawami, a następnie sumowane jest ze stanem poprzednim. Jest to wymagane,  ponieważ sterowniki silników kontrolowane są przez sygnał PWM, nie jest w stanie utrzymać stałej wartości sterującej. To działanie mogłoby być realizowana przez całkujący człon regulatora, jednakże wykorzystane rozwiązanie upraszcza implementacje i dobrze wpasowuje się w dyskretną naturę regulatora.
+Implementacja różniczkowania na mikrokontrolerze wymaga dyskretyzacji tej operacji . Poniższy wzór aproksymuje operacje różniczkowania na dziedzinie dyskretnej:
 \begin{equation}\label{eq:aproksymacja}
    \frac{de(t)}{d} \sim \frac{[e(n) - e(n-1)]}{T} 
   \end{equation}
-Pochodna uchybu w systemie dyskretnym przybliżona jest przez iloraz różnicowy. Dokładność wynika przybliżenia jest tym większa, im mniejszy jest okres T. Projekt zakładał wyzwalanie procedury regulacji prędkości poprzez timer, którego interwał ustalany jest wiadomością kontrolną przez użytkownika. Podobnie jak w przypadku aktualizacji prędkości, kosztem poniesionym za swobodę ustawień jest bezpieczeństwo działania układu regulacji. Wartością nominalną timera regulacji jest 150[ms] co jest jednocześnie okresem dyskretyzacji członu różniczkującego. Pomimo, że aproksymacja w te sposób w znaczny sposób od różniczkowania w dziedzinie ciągłej, wykorzystałem to rozwiązanie ze względu na łatwość implementacji oraz jakość regulacji na oczekiwanym poziomie.
+Pochodna uchybu w systemie dyskretnym przybliżona jest przez iloraz różnicowy. Dokładność wynika przybliżenia jest tym większa, im mniejszy jest okres T. Projekt zakładał wyzwalanie procedury regulacji prędkości poprzez timer, którego interwał ustalany jest wiadomością kontrolną przez użytkownika. Podobnie jak w przypadku aktualizacji prędkości, kosztem poniesionym za swobodę ustawień jest bezpieczeństwo działania układu regulacji. Wartością nominalną timera regulacji jest 150[ms] co jest jednocześnie okresem dyskretyzacji członu różniczkującego. Pomimo, że aproksymacja w ten sposób znacznie odbiega od tej, w dziedzinie ciągłej, wykorzystałem to rozwiązanie ze względu na łatwość implementacji oraz jakość regulacji na oczekiwanym poziomie.
 \begin{lstlisting}[style=c]
 void regulation(void)
 {
@@ -586,15 +537,15 @@ void regulation(void)
 }
 \end{lstlisting}
 
-Algorytm regulacji zaimplementowany została według wyżej wymienionego sposobu. Okres dyskretyzacji członu różniczkującego przeskalowany został do sekund. Aby regulator działął prawidłowo ważne jest spełnienie warunku:
+Algorytm regulacji zaimplementowany została według wyżej wymienionego sposobu. Okres dyskretyzacji członu różniczkującego przeskalowany został do sekund. Aby regulator działał prawidłowo, ważne jest spełnienie warunku:
 \begin{equation}\label{eq:aproksymacja}
     T_{regulacji}  \geq  T_{akt. predkosci} 
   \end{equation}
-Aktualizacja prędkości musi być odbywać się przynajmniej tak często jak regulacja. W przeciwnym razie, regulator będzie wyliczał uchyb względem błędnej prędkości, co może całkowicie zaburzy pracę robota.
+Aktualizacja prędkości musi być odbywać się przynajmniej tak często jak regulacja. W przeciwnym razie obliczony uchyb nie będzie odzwierciedlał faktycznego, co w konsekwencji zaburzy prawidłową pracę regulatora.
 
 \chapter{Oprogramowanie aplikacji sterującej}
  \section{Struktura oprogramowania}
-Aplikacja do sterowania zdalnego robotem została napisana w języka Java. Kod źródłowy jest kompilowany do kodu bajtowego ( forma pośrednia pomiędzy kodem źródłowym, a instrukcjami maszynowymi ) i może być uruchamiany na każdej platformie posiadającej Maszynę Wirtualną Javy. Wybór języka wynika, z wieloplatformowości powstałego programu oraz osobistym doświadczeniu w tworzeniu graficznego interfejsu użytkownika. 
+Aplikacja do sterowania zdalnego robotem została napisana w języka Java. Kod źródłowy jest kompilowany do kodu bajtowego ( forma pośrednia pomiędzy kodem źródłowym, a instrukcjami maszynowymi ) i może być uruchamiany na każdej platformie posiadającej Maszynę Wirtualną Javy. Wybór języka wynika, z wieloplatformowości powstałego programu oraz bogatej bibliotece standardowej. 
 
 Aplikacja składa się z trzech podstawowych komponentów:
 \begin{enumerate}
@@ -603,14 +554,12 @@ Aplikacja składa się z trzech podstawowych komponentów:
  \item modułu sterowania graficznego
 \end{enumerate}
 
-Poza tymi, istnieje jeszcze jeden komponent odpowiedzialny ze utworzenie wyżej wymienionych modułów oraz posiada zbiór funkcji używanych przez wszystkie moduły. Wszystkie komponenty w kodzie źródłowym zorganizowane są w formie pakietów Java. Pakiet Java jest mechanizmem języka, który pozwala grupować powiązane ze sobą klasy, nadając im jednocześnie wspólną przestrzeń nazw.
+Poza tymi, istnieje jeszcze jeden komponent odpowiedzialny za utworzenie wyżej wymienionych modułów. Wszystkie komponenty w kodzie źródłowym zorganizowane są w formie pakietów Java. Pakiet Java jest mechanizmem języka, który pozwala grupować powiązane ze sobą klasy, nadając im jednocześnie wspólną przestrzeń nazw.
 
-   \begin{figure}[ht]
-    \centering
-    \includegraphics[width=1\textwidth]{images/main}
-    \caption{Diagram klas głównego modułu}
-    \label{fig:main}
-   \end{figure}
+   \begin{center}
+    \includegraphics[width=.55\textwidth]{images/main}
+    \captionof{figure}{Diagram klas głównego modułu}
+   \end{center}
 
 Program staruje w klasie głównej InitFrame. Obiekt tej klasy zawiera w sobie egzemplarze klas zarządzających oknami modułów sterujących oraz implementacje interfejsu IBluetooth. Wszystkie przedstawione moduły oraz ich struktura opisane są w dalszej części tego rozdziału. 
 
@@ -618,14 +567,12 @@ Program staruje w klasie głównej InitFrame. Obiekt tej klasy zawiera w sobie e
 
 Moduł ten jest komponentem, którego zadaniem jest obsługiwanie transmisji szeregowej Bluetooth z robotem. Moduł definiuje abstrakcyjny interfejs który pozwala na wymianę informacji z robotem, jednocześnie ukrywając techniczne szczegóły realizacji transmisji danych. 
 
-   \begin{figure}[ht]
-    \centering
-    \includegraphics[width=1\textwidth]{images/bt}
-    \caption{Diagram klas modułu Bluetooth}
-    \label{fig:bt}
-   \end{figure}
+   \begin{center}
+    \includegraphics[width=.6\textwidth]{images/bt}
+    \captionof{figure}{Diagram klas modułu Bluetooth}
+   \end{center}
 
-Podstawą modułu jest interfejs IBluetooth. Udostępnia szereg funkcji, do wymiany danych z robotem. Argumenty funkcji posiadają typ danych, który w naturalny sposób odzwierciedla wartość jaką wyraża. Przykładem może być, zadana prędkość, która posiada typ double, czy czas ekspiracji timera, wyrażony w liczbach całkowitych. Odpowiedzialność za przygotowanie odpowiedniej wiadomości, zgodnej z zaprojektowanym protokołem przeniesiona jest na ten komponent. Warto również zauważyć, że funkcja zadająca prędkość (setVelocity) posługuje się argumentami : Translacja, Rotacja. Z poziomu aplikacji użytkownik korzysta z zadawania prędkości translacji ( ruchu postępowego robota w dwuwymiarowym układzie współrzędnych) i rotacji ( ruchu obrotowego ) , a nie prędkościami poszczególnych kół. Z punktu widzenia użytkownika jest to bardziej intuicyjne rozwiązanie. Pobieranie wartości również jest przekształcane z prędkości lewego i prawego koła na prędkość translacji i rotacji. Transformacje za pomocą funkcji:
+Podstawą modułu jest interfejs IBluetooth. Udostępnia szereg funkcji, do wymiany danych z robotem. Argumenty funkcji posiadają typ danych, który w naturalny sposób odzwierciedla wartość jaką wyraża. Przykładem może być zadana prędkość, która posiada typ double, czy czas ekspiracji timera, wyrażony w liczbach całkowitych. Odpowiedzialność za przygotowanie odpowiedniej wiadomości, zgodnej z zaprojektowanym protokołem przeniesiona jest na ten komponent. Warto również zauważyć, że funkcja zadająca prędkość (setVelocity) posługuje się argumentami : Translacja, Rotacja. Z poziomu aplikacji użytkownik korzysta z zadawania prędkości translacji ( ruchu postępowego robota w dwuwymiarowym układzie współrzędnych) i rotacji ( ruchu obrotowego ) , a nie prędkościami poszczególnych kół. Z punktu widzenia użytkownika jest to bardziej intuicyjne rozwiązanie. Pobieranie wartości również jest przekształcane z prędkości lewego i prawego koła na prędkość translacji i rotacji:
 
 \begin{lstlisting}[style=java]
 public static double[] TranRot2LeftRight(double translation, double rotation)
@@ -635,7 +582,7 @@ public static double[] TranRot2LeftRight(double translation, double rotation)
 	result[1] = translation - rotation;
 	return result;
 }	
-public static double[] LertRight2TranRot(double left,double right)
+public static double[] LertRight2TranRot(double left, double right)
 {
 	double[] result =new double[2] ;
 	result[0] = (left + right)/2;
@@ -657,23 +604,19 @@ Istotną koncepcją przy tworzeniu było zapewnianie, aby tylko jedna instancja 
 Sama obsługa portu szeregowego wykorzystuje bibliotekę jSSC udostępnioną na otwartej licencji. Obsługa portów szeregowych jest ściśle związana z systemem operacyjnym  i wymagana jest ich natywna implementacja, specyficzna dla danego systemu. Zastosowana biblioteka posiada zaimplementowaną natywną obsługę transmisji szeregowej dla większości znanych platform oraz udostępnia abstrakcyjny interfejs w języku Java, który pozwala wykorzystanie go w programie.
 
  \section{Moduł sterowania tekstowego}
-Głównym założeniem przy projektowaniu aplikacji sterującej było umożliwienie użytkownikowi tworzenia skryptów pozwalający implementować dowolny algorytm oraz interakcję z robotem za pomocą komend tekstowych. Wymagało to stworzenie modułu o podstawowej funkcjonalności edytora testowego. Założeniem była również interakcja z poziomu konsoli interpretera, który swoją funkcjonalnością będzie przypominał inne znane interpretery języków skryptowych.
+Głównym założeniem przy projektowaniu aplikacji sterującej było umożliwienie użytkownikowi tworzenia skryptów pozwalający implementować dowolny algorytm oraz interakcję z robotem za pomocą komend tekstowych. Wymagało to stworzenia modułu o podstawowej funkcjonalności edytora testowego. Założeniem była również interakcja z poziomu konsoli interpretera, który swoją funkcjonalnością będzie przypominał inne znane interpretery języków skryptowych.
 
-   \begin{figure}[ht]
-    \centering
+   \begin{center}
     \includegraphics[width=1\textwidth]{images/iterpreter1}
-    \caption{Okno panelem interpretera  z interpreterem }
-    \label{fig:iterpreter1}
-   \end{figure}
+    \captionof{figure}{Okno panelem interpretera  z interpreterem }
+   \end{center}
 
 Interpreter wykonuje pojedynczą instrukcję, zakończoną średnikiem. Klawisz ENTER rozpoczyna wykonywanie komendy, natomiast klawiszami strzałek możemy przeglądać historie wykonanych instrukcji. Interpreter nie jest związany z panelem sterowania umieszczonym powyżej, interakcja odbywa się tylko za pomocą klawiszy. 
 
-   \begin{figure}[ht]
-    \centering
+   \begin{center}
     \includegraphics[width=1\textwidth]{images/skryptowanie}
-    \caption{Okno z panelem skryptu }
-    \label{fig:skryptowanie}
-   \end{figure}
+    \captionof{figure}{Okno z panelem skryptu }
+   \end{center}
 
 Panel edycji skryptów posiada funkcjonalność podstawowego edytora testu. Górne pole tekstowe służy do tworzenia kodu, natomiast dolne jest przekierowanym standardowym wyjściem silnika JavaScript. Powyżej pól tekstowych znajduję się pasek narzędzi oraz menu. Wszystkie funkcje wspomagania edycji dostępne są z poziomu menu, paska narzędzi oraz skrótów klawiszowych. Edytor umożliwia:
 
@@ -687,12 +630,10 @@ Panel edycji skryptów posiada funkcjonalność podstawowego edytora testu. Gór
 
 Ważnym aspektem modułu jest fakt, że zarówno interpreter, jak i edytor korzystają z tej samej instancji silnika JavaScript. Oznacza to, że działania wykonane na jednym panelu widoczne są w drugim. Nie stoi nic na przeszkodzi, aby konfiguracje robota przeprowadzić za pomocą edytora skryptów, natomiast same sterowanie odbyło się za pomocą panelu interpretera.
 
-   \begin{figure}[ht]
-    \centering
+   \begin{center}
     \includegraphics[width=1\textwidth]{images/script}
-    \caption{Diagram klas modułu sterowania tekstowego }
-    \label{fig:script}
-   \end{figure}
+    \captionof{figure}{Diagram klas modułu sterowania tekstowego }
+   \end{center}
 
 Wykorzystanie silnika języka interpretowanego umożliwię interfejs IShellInterpreter. Zastosowanie interfejsu nie wiąże programu z konkretnym silnikiem, umożliwia to w podłączenie dowolnego interpretera bez wprowadzania zmian w programie. Interfejs IBluetooth wywoływany jest poziomu samego JavaScriptu, w związku z czym nie jest powiązany z żadnym z obiektów w module.   
 
@@ -764,7 +705,7 @@ Sam inicjalny skrypt ładowany podczas konstruktora klasy opakowuje wszystkie me
 
  \section{Moduł sterowania graficznego}
 
-Wykorzystanie potencjału sterowanie tekstowego wymaga podstawowej wiedzy programistycznej i poświęcenia czasu aby w pełni poprawnie przygotować skrypt. Poza tym moduł ten nadaje się do implementacji algorytmu poruszania się robota, niekoniecznie natomiast sprawdza się w sytuacji gdy chcemy , aby robot reagował na nasze działania w czasie rzeczywistym. Odpowiedzią  na ten problem jest moduł sterowania graficznego. Idea tego komponentu polega na wykorzystaniu bloków sterujących, które pozwalająca komunikację z robotem za pomocą interfejsu graficznego. Bloki sterujące pozwalają na zmianę konfiguracji robota, kontrolę  i wizualizację prędkości bez konieczności używanie komend tekstowych. 
+Wykorzystanie potencjału sterowanie tekstowego wymaga podstawowej wiedzy programistycznej i poświęcenia czasu aby w pełni poprawnie przygotować skrypt. Poza tym moduł ten nadaje się do implementacji algorytmu poruszania się robota, niekoniecznie natomiast sprawdza się w sytuacji gdy chcemy , aby robot reagował na nasze działania w czasie rzeczywistym. Odpowiedzią  na ten problem jest moduł sterowania graficznego. Idea tego komponentu polega na wykorzystaniu bloków sterujących, pozwalających na komunikację z robotem za pomocą interfejsu graficznego. Bloki sterujące pozwalają na zmianę konfiguracji robota, kontrolę  i wizualizację prędkości bez konieczności używania komend tekstowych. 
 
 Główne okno modułu graficznego pozwala wybierać bloki, które chcemy aktualnie użyć przy sterowaniu robotem, spośród wszystkich dostępnych. Dodatkowo w menu umieszczone są dwie pomocnicze opcje pozwalające na dodawanie bądź usunięcie wszystkich bloków. Bloki sterujące są szczegółowo opisane w następnych podrozdziałach.
 
@@ -782,7 +723,7 @@ Samo okno aplikacji pozwala dynamicznie zarządzać blokami na ekranie. W zależ
   \captionof{figure}{Bazowy blok sterujący}
 \end{center}
 
-Przycisk z krzyżykiem odpowiada za wyłączenie elementu i jest jednoznaczny z odznaczeniem elementu w głównym oknie modułowym. Przycisk aktywacji określa włączenie działania bloku i jest podstawowym mechanizmem w synchronizacji pracy. Współpraca bloków opisana jest w podrozdziale 4.4.3. Ich wymiary  są ustalone i nie podlegają modyfikacji. Blok może modyfikować udostępnione przez klasę BaseTile ciało elementu.
+Przycisk z krzyżykiem odpowiada za wyłączenie elementu i jest jednoznaczny z odznaczeniem elementu w głównym oknie modułowym. Przycisk aktywacji określa włączenie działania bloku i jest podstawowym mechanizmem w synchronizacji pracy. Współpraca bloków opisana w dalszej części rozdziału. Ich wymiary są ustalone i nie podlegają modyfikacji. Blok może modyfikować udostępnione przez klasę BaseTile ciało elementu.
 
 Właściwości wspólne dla każdego elementu :
 \begin{itemize}
@@ -798,7 +739,7 @@ Właściwości wspólne dla każdego elementu :
 \end{itemize}
 
 \begin{center}
-  \includegraphics{images/metro}
+  \includegraphics[width=1\textwidth]{images/metro}
   \captionof{figure}{Diagram klas modułu sterowania graficznego}
 \end{center}
 
@@ -830,7 +771,7 @@ W aplikacji stworzone zostały 3 bloki sterujące, po jednym w każdym typie.
     \label{fig:Blok_ster}
    \end{figure}
 
-Blok umożliwia zadawanie prędkości za pomocą myszki. W centralnej części elementu znajduje się obszar obramowany czarowną linią i główny panel sterowania. Naprowadzenie kursora spowoduje zmianę koloru z szarego na biały, natomiast kliknięcie myszką rozpocznie sterowanie. Po rozpoczęciu sterowania nad kursorem pojawi się napis określający zadaną prędkość translacji i rotacji robota wyrażony w cm/s. Punkt zerowy jest w miejscu kliknięcia, które rozpoczyna sterowanie robotem. Na głównym panelem znajduje się informator aktualnego stanu bloku. Pod głównym panelem jest możliwość ustawienia przeskalowania ruchu myszki ( zmiana o ilości pikseli ) na zadaną prędkość. Praktyka pokazuje, że lepiej steruje się robotem, gdy przeskalowanie translacji jest większe niż rotacji.  Przesunięcie myszki w pionie zmienia rotację, natomiast przesunięcie w poziomie zmienia zadaną rotację. Można zadawać prędkości zarówno dodatnie jak i ujemne. Ponowne kliknięcie, bądź wyjście kursora poza panel główny powoduje zakończenie sterowania.
+Blok umożliwia zadawanie prędkości za pomocą myszki. W centralnej części elementu znajduje się obszar obramowany czarowną linią i główny panel sterowania. Naprowadzenie kursora spowoduje zmianę koloru z szarego na biały, natomiast kliknięcie myszką rozpocznie sterowanie. Po rozpoczęciu sterowania nad kursorem pojawi się napis określający zadaną prędkość translacji i rotacji robota wyrażony w cm/s. Punkt zerowy jest w miejscu kliknięcia, które rozpoczyna sterowanie robotem. Nad głównym panelem znajduje się informator aktualnego stanu bloku. Pod głównym panelem jest możliwość ustawienia przeskalowania ruchu myszki ( zmiana o ilości pikseli ) na zadaną prędkość. Praktyka pokazuje, że lepiej steruje się robotem, gdy przeskalowanie translacji jest większe niż rotacji.  Przesunięcie myszki w pionie zmienia rotację, natomiast przesunięcie w poziomie zmienia zadaną rotację. Można zadawać prędkości zarówno dodatnie jak i ujemne. Ponowne kliknięcie, bądź wyjście kursora poza panel główny powoduje zakończenie sterowania.
 \newpage
 \begin{description}
   \item[Nazwa] Prękościomierz
@@ -853,7 +794,7 @@ Blok umożliwia zadawanie prędkości za pomocą myszki. W centralnej części e
     \label{fig:blok_wiz}
    \end{figure}
 
-Prędkościomierz pokazuje aktualną prędkość robota. Lewy panel odpowiada za wyświetlenie prędkości natomiast prawy za formę w jakiej prędkość ma być wyświetlana. Za pomocą prędkościomierza może ustawić jednostkę w jakiej chcemy prezentować  prędkość:
+Prędkościomierz pokazuje aktualną prędkość robota. Lewy panel odpowiada za wyświetlenie prędkości natomiast prawy za formę w jakiej prędkość ma być wyświetlana. Użytkownik ma możliwość ustawienia jednej z trzech jednostek prędkości:
 \begin{itemize}
  \item centymetry na sekundę(domyślnie)
  \item metry na sekundę 
@@ -916,341 +857,7 @@ Podstawowym elementem, służącym synchronizacji jest przytoczony wcześniej me
  \item minimalizacja lub wyłączenie okna powoduje dezaktywację wszystkich elementów
 \end{itemize}
 \newpage
-Drugi etap aktywacji realizowany jest w przestrzeni danego bloku i przygotowuje go do pracy. Wymiana danych  bloków typu STEROWANIE  i WIZUALIZACJE jest  cyklicznie uruchamiana przez, wymieniony już wcześniej,  timer aplikacyjny. Licznik ten co podany okres uruchamia swoją funkcję obsługi:
-
-\begin{lstlisting}[style=java]
-Private class Task implements ActionListener
-{
-private int currentVal =0;
-private const int typeNumber = 1; 
-double[] velocity;
-		
-private void iterate CurrentVal()
-{
-	if(currentVal != typeNumber)
-		currentVal++;
-	else
-		currentVal =0;
-}
-		
-@Override
-public void actionPerformed(ActionEvent e) {
-try{	
-	if(setSpeedObs !=null && currentVal ==0)
-	{
-		velocity = setSpeedObs.update(null);
-		bluethooth.setVelocity(velocity[0], velocity[1], 0);
-		System.out.println("SET Tr: "+velocity[0]+" Rot: "+ velocity[1]);
-	}
-	if(!getSpeedObs.isEmpty() && currentVal ==1)
-	{
-		String tmp = bluethooth.getVelocity();
-		velocity =GeneralConverter.deserializeStr2Dbl(tmp);
-		System.out.println("GET Tr: "+velocity[0]+" Rot: "+ velocity[1]);
-		for(BTObserver obs : getSpeedObs)
-			obs.update(velocity);
-	}
-				
-	}catch(SerialPortException serial E) {}
-		System.err.println("Bluetooth transmission error!!!");	
-	}
-}
-\end{lstlisting}
-Obsługa przepełnienia timera naprzemienne aktualizuje włączony blok sterujący i  wszystkie bloki pobierające aktualną prędkość.
-
-\chapter{Protokół komunikacyjny}  
-
-Protokół komunikacyjny używany do wymiany danych pomiędzy robotem, a aplikacją składa się z 15 wiadomości kontrolnych. Wiadomości pozwalają  pobierać i ustawiać dane na robocie. W większości występują w parach ustaw/pobierz. Protokół nie zakłada istnienia wiadomości jednocześnie zmieniających stan robota i pobierających aktualny stan. Prawidłowa odpowiedź na komendę typu ustaw jest identyczna do odebranej komendy, natomiast obsługa wiadomości typu pobierz nie ujmuje pod uwagę pól danych odebranej komendy.
-
-Wiadomość składa się z 10 bajtów:
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}
-\hline
-Nr bajtu          & 0   & 1  & 2    & 3    & 4   & 5    & 6    & 7    & 8    & 9   \\ \hline
-Rodzaj wiadomości & "B" & ID & Dane & Dane & "M" & Dane & Dane & Dane & Dane & "E" \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Bajty 0, 4 i 9 w każdej wiadomości  są stałe i są równe wartości danej litery w kodzie ASCII. Służą one do kontroli poprawności przesłanej wiadomości.
-
-Bajt 1 określa identyfikator danej wiadomości i na jego podstawie oprogramowanie robota jest w stanie uruchomić odpowiednią funkcję obsługi przesłanej wiadomości. Zostało to zaprezentowane w rozdziale 3.4.
-
-Reszta bajtów przenosi dane konkretnej wiadomości. Wiadomości pozwalają na kodowanie liczby zmiennoprzecinkowej, jak również większych niż 1 bajt liczb całkowitych.
-
- \section{Spis wiadomości kontrolnych}   
-
-Każda wiadomość kontrolna przedstawiona jest według poniższego schematu:
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
-\hline
-\multicolumn{4}{|l|}{Nazwa Wiadomości} & \multicolumn{4}{l|}{Komenda Javascript} & \multicolumn{2}{l|}{Typ} \\ \hline
-BAJT 0      & BAJT 1      & BAJT 2     & BAJT 3      & BAJT 4      & BAJT 5      & BAJT 6      & BAJT 7     & BAJT 8     & BAJT 9     \\ \hline
-\multicolumn{10}{|c|}{CHARAKTERYSTKA WIADMOSCI}                                                                                       \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Dla wielkości USTAW w drugim wierszu zaprezentowana jest komenda którą odbiera robot, dla wiadomości typu POBIERZ jest to odpowiedź otrzymywana przez aplikację sterującą.
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Ustawienie prędkości zadaniej} & \multicolumn{4}{l|}{RobotSetVel(float TR,float ROT,float time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
-"B" \hspace{1em}             & 1\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & T1\hspace{2em}         & T2\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-Wiadomość ustawia prędkość zadaną dla regulatora. 
-Wartości L1 i L2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą zadaną prędkość dla lewego koła
-Wartości R1 i R2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą zadaną prędkość dla prawego koła 
-Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund po jakim zadana prędkość" będzie wyzerowana. 
-Jeżeli wartość T1 i T2 wynoszą zero timer odpowiedzialny za zatrzymanie silników po ustalonej wartości nie będzie uruchomiony a zadana prędkość nie będzie zmieniana.
-
-Dane zawierające prędkości są deserializowane i zapisywane do odpowiadających im globalnych zmiennych robota. Jeżeli te dane zawierają wszystkie wartości równe zero silniki są zatrzymywane
-Wywołując komendę z poziomu JavaScript prędkoć translacji i rotacji zamieniana jest na lewego i prawego koła przed wysłaniem.
-Komenda zwraca sterowanie od razu po wywołaniu
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Ustawienie prędkości zadaniej z blokadą} & \multicolumn{4}{l|}{RobotSetVelWait(float TR,float ROT,float time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
-"B" \hspace{1em}             & 17\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & T1\hspace{2em}         & T2\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Komenda różni się od poprzedniej tym, że zwraca sterowanie po ekspiracji timera
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Pobranie faktycznej prędkości } & \multicolumn{4}{l|}{RobotGetVel()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
-"B" \hspace{1em}             & 2\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Wiadomość zwraca faktyczną prędkość, jaką posiada robot. 
-Wartości L1 i L2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą faktyczną prędkość dla lewego koła
-Wartości R1 i R2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą faktyczną prędkość dla lewego koła 
-
-Odsyłane prędkości są zserializowanymi zmiennymi globalnymi, których wartość obliczana  jest w cyklu aktualizacji prędkości. Opis procedury jest w rozdziale 3.5
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Ustawienie nastaw regulatora } & \multicolumn{4}{l|}{setConfig(double P, double D)} & \multicolumn{2}{l|}{USTAW} \\ \hline
-"B" \hspace{1em}             & 3\hspace{2em}              & P1\hspace{2em}              & P2\hspace{2em}         & "M"\hspace{2em}         & D1\hspace{2em}         & D2\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Wiadomość ustawia nastawy regulatora. 
-Wartości P1 i P2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą wartość wzmocnienia członu proporcjonalnego regulatora PD
-Wartości P1 i P2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą wartość wzmocnienia członu różniczkującego regulatora PD
-
-Dane są deserializowane i zapisywane do odpowiadających im globalnych zmiennych robota.
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Pobranie nastaw regulatora  } & \multicolumn{4}{l|}{getConfig()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
-"B" \hspace{1em}             & 4\hspace{2em}              & P1\hspace{2em}              & P2\hspace{2em}         & "M"\hspace{2em}         & D1\hspace{2em}         & D2\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
- Wiadomość zwraca aktualne nastawy regulatora. 
-Wartości P1 i P2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą wartość wzmocnienia członu proporcjonalnego regulatora PD
-Wartości P1 i P2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą wartość wzmocnienia członu różniczkującego regulatora PD
-
-Odsyłane nastawy  są zserializowanymi zmiennymi globalnymi.
-
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Ustawienie timera bezpieczeństwa } & \multicolumn{4}{l|}{setTimeout(int timeout)} & \multicolumn{2}{l|}{USTAW} \\ \hline
-"B" \hspace{1em}             & 5\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Wiadomość ustawia timer bezpieczeństwa. Timer jest startuje wraz z odebraniem wiadomości przez robota. Jeżeli nie otrzyma następnej wiadomości przed końcem odliczania robot zatrzyma silniki
-Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund co ile generowane jest przerwanie.
-
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Pobranie interwału timera bezpieczeństwa  } & \multicolumn{4}{l|}{getTimeout()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
-"B" \hspace{1em}             & 6\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-Wiadomość zwraca ustawioną wartość milisekund po którym uruchamiamy jest timer bezpieczeństwa.
-Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund co ile generowane jest przerwanie.
-
-Dane są składane w 16-bitową wartość całkowitą, która jest wykorzystywana jest w ustawieniach timera bezpieczeństwa. Timer został opisany w rozdziale 3.5.
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Ustawienie wartosci wypelnienia PWM } & \multicolumn{4}{l|}{setPWM(int left, int right, int time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
-"B" \hspace{1em}             & 7\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & T1\hspace{2em}         & T2\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Wiadomość ustawia wartość sygnału PWM dla silników 
-Wartości L1 i L2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą wartość sygnału PWM, który steruje lewym silnikiem.
-Wartości R1 i R2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą PWM który, steruje prawym silnikiem.
-Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund po jakim zadana prędkość będzie wyzerowana. Jeżeli wartość T1 i T2 wynoszą zero timer odpowiedzialny za zatrzymanie silników po ustalonej wartości nie będzie uruchomiony i a zadana prędkość nie będzie zmieniana.
-
-Dane zawierające PWM są składane do zmiennych 16-bitowych i zapisywane ustawiana na timery generujące sygnały PWM Maksymalne wypełnienie wynosi 4200 i wysłanie prędkości większej spowoduję ustawienie tej wartości. Jeżeli te dane zawierają wszystkie wartości równe zero silniki są zatrzymywane
-
-Ustawienie wartości sygnałów PWM jest niemożliwe, gdy uruchomiony jest timer odpowiedzialny za działanie regulatora prędkości. Nie można nastawiać bezpośrednio wartości wypełnienia sygnału PWM, gdy kontroluje tę wartość regulator.
-Komenda zwraca sterowanie od razu po wywołaniu
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Ustawienie wartosci wypelnienia PWM } & \multicolumn{4}{l|}{setPWM(int left, int right, int time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
-"B" \hspace{1em}             & 17\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & T1\hspace{2em}         & T2\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-Komenda różni się od poprzedniej tym, że zwraca sterowanie po ekspiracji timera
-
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Pobranie wartości wypełnienia PWM  } & \multicolumn{4}{l|}{getPWM()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
-"B" \hspace{1em}             & 8\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-Wiadomość zwraca wartość sygnału PWM dla silników 
-Wartości L1 i L2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą wartość sygnału PWM, który steruje lewym silnikiem.
-Wartości R1 i R2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą PWM który, steruje prawym silnikiem.
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Ustawienie timera aktualizacji prędkości } & \multicolumn{4}{l|}{setEncoderMeas(int time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
-"B" \hspace{1em}             & 9\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Wiadomość ustawia timer który, co określony interwał czasu aktualizuje prędkość robota
-Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund co ile generowane jest przerwanie.
-Działanie timera i opis aktualizacji prędkości opisany został w rozdziale 3.6
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Pobranie nastawionej prędkości regulatora   } & \multicolumn{4}{l|}{getEncoderMeas()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
-"B" \hspace{1em}             & 10\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Wiadomość zwraca ustawioną wartość milisekund interwału aktualizacji prędkości robota
-Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund interwału czasowego timera
-
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Pobranie nastawionej prędkości regulatora  } & \multicolumn{4}{l|}{RobotGetSetVel()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
-"B" \hspace{1em}             & 11\hspace{2em}              & L1\hspace{2em}              & L2\hspace{2em}         & "M"\hspace{2em}         & R1\hspace{2em}         & R2\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-Wiadomość zwraca prędkość która jest zadana na wejście regulatora. 
-Wartości L1 i L2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą zadaną prędkość dla lewego koła
-Wartości R1 i R2 są zserializowaną zmienną zmiennoprzecinkową oznaczającą zadaną prędkość dla lewego koła 
-
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Ustawienie timera aktywacji regulatora } & \multicolumn{4}{l|}{setRegulationTimer(int time))} & \multicolumn{2}{l|}{USTAW} \\ \hline
-"B" \hspace{1em}             & 12\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Wiadomość ustawia timer który, co określony interwał czasu uruchamia regulator.
-Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund co ile generowane jest przerwanie.
-Ustawienie wartości T1 i T2 na zero oznacza wyłączenia regulatora i umożliwia nastawianie wartości wypełnienia PWM bezpośrednio na silniki. W przypadku wyłączonego timera, ustawienie wartości większej od zera włącza regulację prędkości.
-Działanie timera i opis regulacji prędkości opisany został w rozdziale 3.7
-
-\begin{table}[!htb]
-\centering
-\begin{adjustbox}{width=1\textwidth}
-\label{my-label}
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{4}{|l|}{Pobranie nastawionej prędkości regulatora   } & \multicolumn{4}{l|}{getRegulationTimer()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
-"B" \hspace{1em}             & 13\hspace{2em}              & T1\hspace{2em}              & T2\hspace{2em}         & "M"\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}         & 0\hspace{2em}          & "E"\hspace{2em}          \\ \hline
-\end{tabular}
-\end{adjustbox}
-\end{table}
-
-Wiadomość zwraca ustawioną wartość milisekund interwału regulatora prędkości
-Wartości T1 i T2 są rozłożoną 16-bitową zmienną całkowitą oznaczającą ilość milisekund interwału czasowego timera
-
+Drugi etap aktywacji realizowany jest w przestrzeni danego bloku i przygotowuje go do pracy. Wymiana danych  bloków typu STEROWANIE  i WIZUALIZACJE jest  cyklicznie uruchamiana przez, wymieniony już wcześniej,  timer aplikacyjny.
 
   \chapter{Prezentacja możliwości wykonanego projektu}
 W tym rozdziale zaprezentowane została część możliwości jakie udostępnia stworzony projekt. Zachowanie robota zaprezentowane zostało w dołączonych plikach wideo. 
@@ -1258,7 +865,7 @@ W tym rozdziale zaprezentowane została część możliwości jakie udostępnia 
  \section{Dobór nastaw regulator}
 
 \begin{center}
-  \includegraphics{images/vregul}
+  \includegraphics[width=1\textwidth]{images/vregul}
   \captionof{figure}{Autoregulacja}
 \end{center}
 
@@ -1287,11 +894,11 @@ var ilosc_pomiarow = 10;
 var bestkryterium = Infinity;
 
 function sleep(millis)
- {
-  var date = new Date();
-  var curDate = null;
-  do { curDate = new Date(); }
-  while(curDate-date < millis);
+{
+	var date = new Date();
+	var curDate = null;
+	do { curDate = new Date(); }
+	while(curDate-date < millis);
 }
 
 function kryterium(pomiary,zadanaT,zadanaR)
@@ -1345,12 +952,12 @@ print('Nastawa P: '+Pbest);
 print('Nastawa D: '+Dbest);
 \end{lstlisting}
 
-Skrypt zakończył się wynikiem:  nastawa P : 99, nastawa D : 82.
+Skrypt zakończył się wynikiem:  nastawa P : 99, nastawa D : 82. Umieszczone zdjęcie jest jedną z klatek z nagranego materiału wideo przedstawiający opisane zadanie. Został on dołączony do płyty CD i znajduje się pod ściezką filmy/autoregulacja.mp4
 
  \section{Ustawianie trasy robota za pomocą skrypu}
 
 \begin{center}
-  \includegraphics{images/vkwadrat}
+  \includegraphics[width=1\textwidth]{images/vkwadrat}
   \captionof{figure}{zadawanie trajektorii}
 \end{center}
 
@@ -1364,7 +971,7 @@ function calcTranslationTime(side,velocity)
 }
 function calcRotationTime(velocity)
 {
-	return Math.round( Math.PI / velocity * 1000 ); 
+	return Math.round( Math.PI / 2 / velocity * 1000 ); 
 }
 
 var lengthOfTranslation = 30, // cm
@@ -1384,30 +991,388 @@ for(var i = 0; i < 4; ++i)
 }
 \end{lstlisting}
 
-Odstępstwa od kształtu kwadratu spowodowane są niedokładnością układu regulacji, ale przede wszystkim eksploatacją mechaniczną samej konstrukcji. Podczas testów robot był wielokrotnie rozmontowywany co doprowadziło do delikatnego uszkodzenia jednej z gąsienic. Wynikiem była inna prędkość liniowa każdego Z kół przy jednoczesnej prędkości obrotowej, co stanowi duży problem przy regulacji prędkości liniowej robota.
+Odstępstwa od kształtu kwadratu spowodowane są niedokładnością układu regulacji, ale przede wszystkim, związanymi z eksploatacją, usterkami mechanicznymi samej konstrukcji. Sam skrypt używa funkcji zadawania prędkości z blokowaniem. Sterowanie jest zwracane do skryptu dopiero za pełnym zakończeniu ruchu robota. Materiał wideo z tego zdania znajduje się w filmy/kwadrat.mp4
 
  \section{Prezentacja graficznego sterowania}
 Zaprezentowany został sposób sterowania robotem za pomocą panelu graficznego. W pracy załączony został film pokazujący jak zadawana prędkość za pomocą ruchów myszki odwzorowana jest na robocie:
 
 \begin{center}
-  \includegraphics{images/vmetro}
+  \includegraphics[width=1\textwidth]{images/vmetro}
   \captionof{figure}{Sterowanie graficzne}
 \end{center}
 
+Film znajduje się w filmy/graficzne.mp4.
+
 
 \chapter{Podsumowanie}
-W projekcie zrealizowanie zostały wszystkie przyjęte założenia dotyczące. Powstała konstrukcja mechaniczna oraz elektroniczna robota. Praca koncentrowała się na rozwoju oprogramowania, zarówno samego robota, jak i aplikacji. Opisane zostały podstawy konstrukcyjne robota oraz szczegółowy opis rozwiązań programowych ze szczególnym uwzględnieniem zastosowanych algorytmów. Proces budowy i eksploatacji robota doprowadziło następujących wniosków:
+W ramach pracy powstała konstrukcja mechaniczna oraz elektroniczna robota oraz jego oprogramowanie. Oprogramowanie obejmowało część po stronie robota oraz aplikację kliencką uruchamianą na zewnętrznym PC. Opisane zostały podstawy konstrukcyjne robota oraz szczegółowy opis rozwiązań programowych ze szczególnym uwzględnieniem zastosowanych algorytmów. Proces budowy i eksploatacji robota doprowadził następujących wniosków:
 \begin{enumerate}
- \item Zastosowanie gotowego modelu wydaje się pewniejszym rozwiązaniem niż własnoręczna konstrukcja, mechaniczna. Jednakże, przy kupnie nowej platformy, nie wiemy jakiej jest jakości. Kupiona konstrukcja charakteryzuje się bardzo szybkim stopniem eksploatacji. Najbardziej problematyczne okazał się rozciągnięcie jednej gąsienicy, co uniemożliwiało w pełni skuteczną regulację prędkości bazując na odczytach z enkoderów. W związku identyczna prędkość obrotową nie jest równa prędkości liniowej dla każdego koła. Zabezpieczenie się przed takimi przypadłościami warto rozważyć użycie dodatkowych sensorów pozwalających na określenie orientacji robota, na przykład żyroskop, w celu korekcji niedokładności konstrukcyjnych.
+ \item Zastosowanie gotowego modelu wydaje się pewniejszym rozwiązaniem niż własnoręczna konstrukcja, mechaniczna. Jednakże, przy kupnie nowej platformy, nie wiemy jakiej jest jakości. Problemem wybranej platformy była niska trwałość. Konstruując robota nie można w pełni zapobiec usterkom mechanicznym, które w zaburzają jego pracę. Dzięki informacją z dodatkowych sensorów można zaprojektować układ regulacji odporny na tego typu usterki, co w dużym stopniu zwiększy niezawodność robota.
  \item Komunikacja poprzez interfejs szeregowy z wykorzystaniem modułu Bluetooth doskonale sprawdza się w zastosowaniach robotyki amatorskiej. Zasięg do ok. 10m, deterministyczność transmisji i prostota obsługi sprawia, że warto ją rozważyć jako standardowy sposób komunikacji projektu. Komunikacja bazująca na zasadzie klient-serwer nie zawiodła nawet podczas intensywnej eksploatacji robota.
  \item Osadzenie silnika język skryptowego pozwala z możliwością komunikacji z robotem umożliwia bardzo szerokie możliwości pracy z robotem. Zasoby jakie potrzebne są do uruchomienia interpretera jakiegokolwiek języka skryptowego są przeważnie wielokrotnie większe niż te, które udostępniają średniej klasy mikrokontrolery. Zastosowane rozwiązanie wykorzystuje moc obliczeniową i pamięć komputera sterującego przesyłając wyniki operacji robotowi. Dzięki czemu, nawet na ośmiobitowym mikrokontrolerze można prototypować skomplikowane algorytmy. Z punktu widzenia programisty bardzo przydatne jest możliwość podglądania poszczególnych wartości w czasie rzeczywistych testów robota.
  \item Stworzony  interfejs komunikacyjny świetnie sprawdza się w działaniu modułu interpretera oraz przy konfiguracji  i testowaniu robota, jednakże przy sterowaniu poprzez tryb graficzny wprowadza zauważalne opóźnienia. Warto jest rozważyć implementację protokołu komunikacyjnego dla trybu synchronicznego, czy wręcz strumieniowego. 
 \end{enumerate}
 
-Projekt charakteryzuje się niezwykle duża podatnością  na rozbudowę. Z punktu widzenia sprzętowego najważniejsze jest budowa, bądź nabycie modelu mechanicznego wysokiej jakości. Sam projekt nie zakładał odczytu informacji z otoczenia oraz wizualizacji danych. Rozbudowa układu elektronicznego o dalmierze i czujniki MEMS pozwalają poprawę układu regulacji oraz na rozszerzenie projektu o cały szereg zagadnień związanych za analizą i wizualizacją danych. Celem długofalowym jest opracowanie pełnej specyfikacji protokołu komunikacyjnego dla synchronicznej i asynchronicznej wymiany danych, specyfikacja abstrakcyjnego interfejsu funkcjonalności robota wraz z pełną właściwą implementacją. 
+Projekt daje różnorodne możliwości rozbudowy. Z punktu widzenia sprzętowego najważniejsze jest budowa, bądź nabycie modelu mechanicznego wysokiej jakości. Sam projekt nie zakładał odczytu informacji z otoczenia oraz wizualizacji danych. Rozbudowa układu elektronicznego o dalmierze i czujniki MEMS pozwalają na poprawę układu regulacji oraz na rozszerzenie projektu o cały szereg funkcji związanych za analizą i wizualizacją danych. Zadaniem długofalowym jest opracowanie pełnej specyfikacji protokołu komunikacyjnego dla synchronicznej i asynchronicznej wymiany danych, specyfikacja abstrakcyjnego interfejsu funkcjonalności robota wraz z pełną właściwą implementacją. 
+
+\appendix 
+\chapter{Protokół komunikacyjny}
+Protokół komunikacyjny używany do wymiany danych pomiędzy robotem, a aplikacją składa się z 15 wiadomości kontrolnych. Wiadomości pozwalają  pobierać i ustawiać dane na robocie. W większości występują w parach ustaw/pobierz. Protokół nie zakłada istnienia wiadomości jednocześnie zmieniających stan robota i pobierających aktualny stan. Prawidłowa odpowiedź na komendę typu ustaw jest identyczna do odebranej komendy, natomiast obsługa wiadomości typu pobierz nie ujmuje pod uwagę pól danych odebranej komendy.
+
+Wiadomość składa się z 10 bajtów:
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|}
+\hline
+Nr bajtu          & 0   & 1  & 2    & 3    & 4   & 5    & 6    & 7    & 8    & 9   \\ \hline
+Rodzaj wiadomości & "B" & ID & Dane & Dane & "M" & Dane & Dane & Dane & Dane & "E" \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Bajty 0, 4 i 9 w każdej wiadomości  są stałe i są równe wartości danej litery w kodzie ASCII. Służą one do kontroli poprawności przesłanej wiadomości.
+
+Bajt 1 określa identyfikator danej wiadomości i na jego podstawie oprogramowanie robota jest w stanie uruchomić odpowiednią funkcję obsługi przesłanej wiadomości. Zostało to zaprezentowane w rozdziale 3.4.
+
+Reszta bajtów przenosi dane konkretnej wiadomości. Wiadomości pozwalają na serializację liczb zmiennoprzecinkowych  z dokładnością do części setnych oraz dwubajtowych liczb całkowitych. 
+
+ \section{Spis wiadomości kontrolnych}   
+
+Każda wiadomość kontrolna przedstawiona jest według poniższego schematu:
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|}
+\hline
+\multicolumn{3}{|l|}{Nazwa Wiadomości} & \multicolumn{3}{l|}{Komenda Javascript} & \multicolumn{2}{l|}{Typ} \\ \hline
+BAJT 0      & BAJT 1      & BAJT 2     & BAJT 3      & BAJT 4      & BAJT 5      & BAJT 6      & BAJT 7     & BAJT 8     & BAJT 9     \\ \hline
+\multicolumn{10}{|c|}{CHARAKTERYSTKA WIADMOSCI}                                                                                       \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+Dla wielkości USTAW w drugim wierszu zaprezentowana jest komenda którą odbiera robot, dla wiadomości typu POBIERZ jest to odpowiedź otrzymywana przez aplikację sterującą. Dane w spisie wiadomości oznaczone są z konwencją: 
+\begin{center}
+\textbf{(F/I)X(1/2)}
+\end{center}
+F oznacza zserializowaną licznę zmiennoprzecinkową, I - całkowią. Ostania pozycja swiaczy o części wartości po serializacji. Przykładowo: pierwsza część przesyłanej wartoci lewego koła -\textbf{ FL1}. 
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|p{0.3\textwidth}|}{Ustawienie prędk. zadaniej} & \multicolumn{5}{|p{0.5\textwidth}|}{RobotSetVel(float TR,float ROT,float time)} & \multicolumn{2}{|p{0.2\textwidth}|}{USTAW} \\ \hline
+"B"              & 1            & FL1              &FL2         & "M"        & FR1         & FR2        & IT1         & IT2         & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}Wiadomość ustawia prędkość zadaną dla regulatora \tabularnewline
+L1 i L2 -   zadana prędkość dla lewego koła.\tabularnewline
+R1 i R2 -   zadana prędkość dla prawego koła \tabularnewline
+T1 i T2 - ilość milisekund po jakim zadana prędkość" będzie wyzerowana. \tabularnewline
+Jeżeli wartość T1 i T2 wynoszą zero timer odpowiedzialny za zatrzymanie silników po ustalonej wartości nie będzie uruchomiony a zadana prędkość nie będzie zmieniana.\tabularnewline
+Jeżeli te dane zawierają wszystkie wartości równe zero silniki są zatrzymywane.\tabularnewline
+Wywołując komendę z poziomu JavaScript prędkoć translacji i rotacji zamieniana jest na lewego i prawego koła przed wysłaniem.\tabularnewline
+Komenda zwraca sterowanie od razu po wywołaniu.
+ \end{tabular}}  \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Ustawienie prędkości zadaniej z blokadą} & \multicolumn{5}{l|}{RobotSetVelWait(float TR,float ROT,float time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B"              & 17              & FL1              & FL2         & "M"         &IR1         & IR2         & IT1         & IT2          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Komenda różni się od poprzedniej tym, że zwraca sterowanie po ekspiracji timera
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Pobranie faktycznej prędkości } & \multicolumn{5}{l|}{RobotGetVel()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B"              & 2              & FL1              & FL2         & "M"         & FR1         & FR2         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość zwraca faktyczną prędkość, jaką posiada robot. \tabularnewline
+L1 i L2 -   faktyczna prędkość dla lewego koła.\tabularnewline
+R1 i R2 -   faktyczna prędkość dla prawego koła \tabularnewline
+
+Odsyłane prędkości są zserializowanymi zmiennymi globalnymi, których wartość obliczana  jest w cyklu aktualizacji prędkości. \tabularnewline
+Opis procedury jest w rozdziale 3.5\tabularnewline
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Ustawienie nastaw regulatora } & \multicolumn{5}{l|}{setConfig(double P, double D)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B"              & 3              & FP1              & FP2         & "M"         & FD1         & FD2         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość ustawia nastawy regulatora. \tabularnewline
+P1 i P2 - wartość wzmocnienia członu proporcjonalnego regulatora PD\tabularnewline
+D1 i D2 - wartość wzmocnienia członu różniczkującego regulatora PD \tabularnewline
+
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Pobranie nastaw regulatora  } & \multicolumn{5}{l|}{getConfig()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B"              & 4              & FP1              & FP2         & "M"         & FD1         & FD2         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość zwraca aktualne nastawy regulatora. \tabularnewline
+P1 i P2 - wartość wzmocnienia członu proporcjonalnego regulatora PD\tabularnewline
+D1 i D2 - wartość wzmocnienia członu różniczkującego regulatora PD \tabularnewline
+
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Ustawienie timera bezpieczeństwa } & \multicolumn{5}{l|}{setTimeout(int timeout)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B"              & 5              & IT1              & IT2         & "M"         & 0         & 0         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość ustawia timer bezpieczeństwa. \tabularnewline
+Timer jest startuje wraz z odebraniem wiadomości przez robota. \tabularnewline
+Jeżeli nie otrzyma następnej wiadomości przed końcem odliczania robot zatrzyma silniki. \tabularnewline
+T1 i T2- oznacza ilość milisekund co ile generowane jest przerwanie. \tabularnewline
+
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Pobranie interwału timera bezpieczeństwa  } & \multicolumn{5}{l|}{getTimeout()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B"              & 6              & IT1              & IT2         & "M"         & 0         & 0         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość zwraca ustawioną wartość milisekund po którym uruchamiamy jest timer bezpieczeństwa. \tabularnewline
+T1 i T2- oznacza ilość milisekund co ile generowane jest przerwanie. \tabularnewline
+Timer został opisany w rozdziale 3.5.  \tabularnewline
+
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Ustawienie wartosci wypelnienia PWM } & \multicolumn{5}{l|}{setPWM(int left, int right, int time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B"              & 7              & IL1              & IL2         & "M"         & IR1         & IR2         & IT1         & IT2          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość ustawia wartość sygnału PWM dla silników \tabularnewline
+L1 i L2 - oznacza wartość sygnału PWM, który steruje lewym silnikiem.\tabularnewline
+R1 i R2 - oznacza PWM który, steruje prawym silnikiem.\tabularnewline
+T1 i T2 - oznacza ilość milisekund po jakim zadana prędkość będzie wyzerowana. 
+Jeżeli wartość T1 i T2 wynoszą zero timer odpowiedzialny za zatrzymanie silników po ustalonej wartości nie będzie uruchomiony i a zadana prędkość nie będzie zmieniana. \tabularnewline
+
+Ustawienie wartości sygnałów PWM jest niemożliwe, gdy uruchomiony jest timer odpowiedzialny za działanie regulatora prędkości. Nie można nastawiać bezpośrednio wartości wypełnienia sygnału PWM, gdy kontroluje tę wartość regulator. \tabularnewline
+Komenda zwraca sterowanie od razu po wywołaniu. \tabularnewline
+
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Ustawienie wartosci wypelnienia PWM } & \multicolumn{5}{l|}{setPWM(int left, int right, int time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B"              & 17              & IL1              & IL2         & "M"         & IR1         & IR2         & IT1         & IT2          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Komenda różni się od poprzedniej tym, że zwraca sterowanie po ekspiracji timera 
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Pobranie wartości wypełnienia PWM  } & \multicolumn{5}{l|}{getPWM()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B"              & 8              & IL1              & IL2         & "M"         & IR1         & IR2         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość zwraca wartość sygnału PWM dla silników  \tabularnewline
+L1 i L2 - oznacza wartość sygnału PWM, który steruje lewym silnikiem.\tabularnewline
+R1 i R2 - oznacza PWM który, steruje prawym silnikiem.\tabularnewline
+
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Ustawienie timera aktualizacji prędkości } & \multicolumn{5}{l|}{setEncoderMeas(int time)} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B"              & 9              & IT1              & IT2         & "M"         & 0         & 0         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość ustawia timer który, co określony interwał czasu aktualizuje prędkość robota. \tabularnewline
+T1 i T2- oznacza ilość milisekund co ile generowane jest przerwanie. \tabularnewline
+Działanie timera i opis aktualizacji prędkości opisany został w rozdziale 3.6.  \tabularnewline
+
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Pobranie nastawionej prędkości regulatora   } & \multicolumn{5}{l|}{getEncoderMeas()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B"              & 10              & IT1              & IT2         & "M"         & 0         & 0         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość zwraca ustawioną wartość milisekund interwału aktualizacji prędkości robota. \tabularnewline
+T1 i T2- oznacza ilość milisekund interwału czasowego timera. \tabularnewline
+Działanie timera i opis aktualizacji prędkości opisany został w rozdziale 3.6.  \tabularnewline
+
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Pobranie nastawionej prędkości regulatora  } & \multicolumn{5}{l|}{RobotGetSetVel()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B"              & 11              & FL1              & FL2         & "M"         & FR1         & FR2         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość zwraca prędkość która jest zadana na wejście regulatora. \tabularnewline
+L1 i L2 -   zadana prędkość dla lewego koła.\tabularnewline
+R1 i R2 -   zadana prędkość dla prawego koła \tabularnewline
+
+ \end{tabular}}  \\ \hline 
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Ustawienie timera aktywacji regulatora } & \multicolumn{5}{l|}{RobotSetRegTim(int time))} & \multicolumn{2}{l|}{USTAW} \\ \hline
+"B"              & 12              & IT1              & IT2         & "M"         & 0         & 0         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość ustawia timer który, co określony interwał czasu uruchamia regulator. \tabularnewline
+T1 i T2- oznacza ilość milisekund interwału czasowego timera. \tabularnewline
+Ustawienie wartości T1 i T2 na zero oznacza wyłączenia regulatora i umożliwia nastawianie wartości wypełnienia PWM bezpośrednio na silniki. \tabularnewline
+W przypadku wyłączonego timera, ustawienie wartości większej od zera włącza regulację prędkości.\tabularnewline
+Działanie timera i opis regulacji prędkości opisany został w rozdziale 3.7 \tabularnewline
+
+ \end{tabular}}  \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\begin{table}[!htb]
+\centering
+\begin{adjustbox}{width=1\textwidth}
+\label{my-label}
+\begin{tabular}{|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|p{0.1\textwidth}|}
+\hline
+\multicolumn{3}{|l|}{Pobranie nastawionej prędkości regulatora   } & \multicolumn{5}{l|}{RobotGetRegTim()} & \multicolumn{2}{l|}{POBIERZ} \\ \hline
+"B"              & 13              & IT1              & IT2         & "M"         & 0         & 0         & 0         & 0          & "E"          \\ \hline
+\multicolumn{10}{|p{\textwidth}|}{\begin{tabular}{p{\textwidth}}
+Wiadomość zwraca ustawioną wartość milisekund interwału regulatora prędkości. \tabularnewline
+T1 i T2- oznacza ilość milisekund interwału czasowego timera. \tabularnewline
+
+ \end{tabular}}  \\ \hline
+\end{tabular}
+\end{adjustbox}
+\end{table}
+
+\chapter{Płyta CD}
+Do płyty CD dodane zostały:
+\begin{enumerate}
+\item W04\_204291\_2015\_praca inżynierska.pdf - elektroniczna wersja pracy inżynierskiej
+\item w folderze \textit{filmy} umieszczone są materiały wideo z działaniem robota:
+\begin{itemize}
+  \item autoregulacja.mp4
+  \item kwadrat.mp4
+  \item graficznie.mp4
+\end{itemize}
+\end{enumerate}
+
 
 \addcontentsline{toc}{chapter}{Bibliografia} %utworzenie w spisie treści pozycji Bibliografia
 \bibliography{bibliografia} % wstawia bibliografię korzystając z pliku bibliografia.bib - dotyczy BibTeXa, jeżeli nie korzystamy z BibTeXa należy użyć otoczenia thebibliography
+\cite{stm}
+\cite{pid}
+\cite{speed}
+\cite{microchip}
+\cite{java_pod}
+\cite{java_zaaw}
+\cite{datasheet}
 
 %opcjonalnie może się tu pojawić spis rysunków i tabel
 % \listoffigures
